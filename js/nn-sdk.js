@@ -7,6 +7,8 @@ var nn = { };
 (function(nn) {
 	
 	nn.initialize = function() {
+		// NOTE: 'this' is denote 'nn' object itself, but not always.
+		
 		nn.log('nn: initialized');
 	};
 	
@@ -103,8 +105,33 @@ var nn = { };
 		}
 	};
 	
+	nn._ = function(orig, repl) {
+		
+		var result = '';
+		
+		if (typeof orig == 'string') {
+			
+			result = (typeof nn.langPack[orig] == 'string') ? nn.langPack[orig] : orig;
+			
+		}
+		
+		if ($.isArray(repl)) {
+			for (var i = 0; i < repl.length; i++) {
+				result = result.replace('{' + i + '}', repl[i]);
+			}
+		}
+		
+		return result;
+	};
+	
+	nn.i18n = function(pack) {
+		nn.langPack = $.extend(nn.langPack, pack);
+	};
+	
+	nn.langPack = { };
+	
 	nn.logTypes = {
-		'info':    true, // turns log on/off
+		'info':    true, // turns log on/off separately
 		'warning': true,
 		'error':   true,
 		'debug':   true

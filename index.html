@@ -1,7 +1,72 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<link href="css/prettify.css" type="text/css" rel="stylesheet"/>
+	<link href="css/style.css" type="text/css" rel="stylesheet"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+	<script src="js/prettify.js"></script>
+	<script src="js/nn-sdk.js"></script>
+	<script src="js/main.js"></script>
+</head>
 <body>
-	<button>BUTTON</button>
-	<script data-main="js/main" src="http://requirejs.org/docs/release/2.0.4/minified/require.js"></script>
+	<h1 class="align-center">9x9 SDK (<a href="js/nn-sdk.js" title="點我下載">nn-sdk.js</a>) 使用方法說明</h1>
+	<div class="align-center">
+		<p>9x9 SDK 為各個不同的前端專案共通的部分，提供一個統合的界面，力求減低被分別開發各別前端間的差異。</p>
+		<div class="align-right"><img src="http://goo.gl/2gC5w"/><br /><i>2012.08.21</i></div>
+	</div>
+	<h2>相依元件</h2>
+	<ul>
+		<li>jQuery-1.8.x</li>
+	</ul>
+	<h2>初始化</h2>
+	<p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也</p>
+	<pre class="prettyprint">
+	
+	$(function() {
+		nn.initialize();
+	});
+	</pre>
+	<h2>LOG</h2>
+	<pre class="prettyprint">
+	
+	nn.log('I am info');
+	nn.log('I am info', 'info');
+	nn.log('I am warning', 'warning');
+	nn.log('I am error', 'error');
+	nn.log('I am debug', 'debug');
+	</pre>
+	<h2>i18n</h2>
+	<button id="i18n-btn-1">測試1</button>
+	<button id="i18n-btn-2">測試2</button>
+	<button id="i18n-btn-3">測試3</button>
+	<pre class="prettyprint">
+	
+	var langPack = {
+		// this pack can be loaded from api
+		'Helo {0}, there are {1} people online': '您好 {0}, 現在有 {1} 個人在線上',
+		'World': '世界'
+	};
+	
+	nn.i18n(langPack);
+	
+	$('#i18n-btn-1').text(nn._('World'));
+	$('#i18n-btn-2').text(nn._('Helo {0}, there are {1} people online', ['louis', 2]));
+	$('#i18n-btn-3').text(nn._('Bye bye!'));
+	</pre>
+	<h2>API</h2>
+	<pre class="prettyprint">
+	
+	var parameter = {
+	    ‘email’: ‘aaa@tt.com’,
+	    ‘password’: ‘xxxxxxxx’
+	};
+
+	nn.api(‘POST’, ‘/api/login’, parameter, function(user) {
+	    nn.log(user);
+	    // do things
+	});
+	</pre>
+	<h3>錯誤處理</h3>
+	<br />
 </body>
 </html>
