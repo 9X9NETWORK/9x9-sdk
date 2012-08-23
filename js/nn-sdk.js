@@ -59,43 +59,57 @@ var nn = { };
 		}
 	};
 	
-	nn.api = function(method, resourceURI, parameters, callback) {
+	nn.api = function(method, resourceURI, parameter, callback) {
 		
 		nn.log('nn.api: ' + method + ' "' + resourceURI + '"');
-		nn.log(parameters, 'debug');
+		nn.log(parameter, 'debug');
 		
 		if ($.inArray(method, ['PUT', 'GET', 'POST', 'DELETE']) == -1) {
 			nn.log('nn.api: not supported method', 'warning');
 			return;
 		}
 		
-		$.ajax({
+		var localParameter = null;
+		var localCallback = null;
+		
+		if (typeof parameter == 'function') {
+			localCallback = parameter;
+		} else if (typeof parameter != 'undefined') {
+			localParameter = parameter;
+			if (typeof callback == 'function')
+				localCallback = callback;
+		}
+		
+		var jqAjax = $.ajax({
 			'url':        resourceURI,
 			'type':       method,
-			'data':       parameters,
+			'data':       localParameter,
 			'statusCode': nn.apiHooks,
 			'success': function(data, textStatus, jqXHR) {
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
 				nn.log('nn.api: textStatus = ' + textStatus, 'debug');
 				nn.log(data, 'debug');
-				if (typeof callback == 'function') {
-					callback(data);
+				if (typeof localCallback == 'function') {
+					localCallback(data);
 				}
 			},
-			'error': function(jqXHR, textStatus, errorThrown) {
-				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText, 'warning');
+			'error': function(jqXHR, textStatus) {
+				nn.log('nn.api: ' + jqXHR.status + ' ' + jqXHR.statusText, 'warning');
 				nn.log('nn.api: textStatus = ' + textStatus);
+				nn.log('nn.api: responseText = ' + jqXHR.responseText);
 			}
 		});
+		
+		return jqAjax.promise();
 	};
 	
 	nn.apiHooks = {
-		200: function() { },
-		201: function() { },
-		400: function() { },
-		401: function() { },
-		404: function() { },
-		500: function() { }
+		200: function(jqXHR, textStatus) { },
+		201: function(jqXHR, textStatus) { },
+		400: function(jqXHR, textStatus) { },
+		401: function(jqXHR, textStatus) { },
+		404: function(jqXHR, textStatus) { },
+		500: function(jqXHR, textStatus) { }
 	};
 	
 	nn.on = function(type, hook) {

@@ -36,37 +36,84 @@
 	nn.log('I am debug', 'debug');
 	</pre>
 	<h2>i18n</h2>
-	<button id="i18n-btn-1">測試1</button>
-	<button id="i18n-btn-2">測試2</button>
-	<button id="i18n-btn-3">測試3</button>
+	<button id="i18n-btn-1">World</button>
+	<button id="i18n-btn-2">Helo {0}, there are {1} people online</button>
+	<button id="i18n-btn-3">Bye bye!</button>
 	<pre class="prettyprint">
 	
-	var langPack = {
-		// this pack can be loaded from api
+	var langPack = { // this pack can be loaded from api
+		
 		'Helo {0}, there are {1} people online': '您好 {0}, 現在有 {1} 個人在線上',
 		'World': '世界'
 	};
 	
-	nn.i18n(langPack);
+	nn.i18n(langPack); // initialize i18n
 	
-	$('#i18n-btn-1').text(nn._('World'));
-	$('#i18n-btn-2').text(nn._('Helo {0}, there are {1} people online', ['louis', 2]));
-	$('#i18n-btn-3').text(nn._('Bye bye!'));
-	</pre>
-	<h2>API</h2>
-	<pre class="prettyprint">
-	
-	var parameter = {
-	    ‘email’: ‘aaa@tt.com’,
-	    ‘password’: ‘xxxxxxxx’
-	};
-
-	nn.api(‘POST’, ‘/api/login’, parameter, function(user) {
-	    nn.log(user);
-	    // do things
+	$('#i18n-btn-1').click(function() {
+		
+		alert(nn._('World'));
+	});
+	$('#i18n-btn-2').click(function() {
+		
+		alert(nn._('Helo {0}, there are {1} people online', ['louis', 2]));
+	});
+	$('#i18n-btn-3').click(function() {
+		
+		alert(nn._('Bye bye!'));
 	});
 	</pre>
-	<h3>錯誤處理</h3>
+	<h2>API</h2>
+	<label>拿登入來作例子 ( louis@tt.com / 111111 )</label><br />
+	<label>帳號：</label><input id="api-login-email"/>&nbsp;
+	<label>密碼：</label><input type="password" id="api-login-password"/>
+	<button id="api-login-submit">登入</button>
+	<pre class="prettyprint">
+	
+	$('#api-login-submit').click(function() {
+		
+		var email = $('#api-login-email').val();
+		var password = $('#api-login-password').val();
+		var parameter = { 'email': email, 'password': password };
+		
+		nn.api('POST', 'api-login.php', parameter, function(user) {
+			if (!user)
+				alert('登入失敗');
+			else
+				alert('登入成功');
+		});
+	});
+	</pre>
+	<h3>API 的錯誤處理</h3>
+	<label>以錯誤的方式呼叫API－不帶任何參數</label>&nbsp;<button id="api-fail-call">按我測試</button>
+	<pre class="prettyprint">
+	
+	nn.on(400, function(jqXHR, textStatus) {
+		
+		alert(textStatus + ": " + jqXHR.responseText);
+	});
+	
+	$('#api-fail-call').click(function() {
+		
+		nn.api('POST', 'api-login.php', null /* 少了應有的參數 */, function(user) {
+			
+			// 這裡不會被執行
+		});
+	});
+	</pre>
+	<p>
+		要處理 API 的錯誤情形，先必需透過 nn.on() 來掛載所要被執行的 callback 函式。<br />
+		目前支援的掛載的錯誤碼有 200, 201, 400, 401, 404, 500。<br />
+		如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br />
+		callback 函式以 <i>null</i> 代替可以取消掛載。
+	</p>
+	<p>API 允許呼叫的參數組合：</p>
+	<pre class="prettyprint">
+	
+	nn.api(method, resourceURI);
+	nn.api(method, resourceURI, callback);
+	nn.api(method, resourceURI, parameter);
+	nn.api(method, resourceURI, parameter, callback);
+	</pre>
 	<br />
 </body>
 </html>
