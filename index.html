@@ -1,6 +1,8 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="zh-tw">
 <head>
+	<title>9x9 SDK 使用方法說明</title>
+	<meta charset="UTF-8">
 	<link href="css/prettify.css" type="text/css" rel="stylesheet"/>
 	<link href="css/style.css" type="text/css" rel="stylesheet"/>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
@@ -9,11 +11,13 @@
 	<script src="js/main.js"></script>
 </head>
 <body>
-	<h1 class="align-center">9x9 SDK (<a href="js/nn-sdk.js" title="點我下載">nn-sdk.js</a>) 使用方法說明</h1>
+	<h1 class="align-center">9x9 SDK<sup>&copy;</sup> 使用方法說明</h1>
 	<div class="align-center">
-		<p>9x9 SDK 為各個不同的前端專案共通的部分，提供一個統合的界面，力求減低被分別開發各別前端間的差異。</p>
-		<div class="align-right"><img src="http://goo.gl/2gC5w"/><br /><i>2012.08.21</i></div>
+		<p><b>9x9 SDK</b> 為各個不同的前端專案共通的部分，提供一個統合的界面，力求減低被分別開發的各別前端應用間的差異。</p>
+		<div class="align-right"><a href="mailto:louis.jeng@9x9.tv"><img src="http://goo.gl/2gC5w" alt="Louis Jeng"/></a><br /><i>2012.08.21</i></div>
 	</div>
+	<hr />
+	<p>9x9 SDK 是用 Javascript 寫成，只要在網頁適當地方引入即可。<del>目前最新版本為 0.0.1。</del></p>
 	<h2>相依元件</h2>
 	<ul>
 		<li>jQuery-1.8.x</li>
@@ -63,8 +67,9 @@
 	});
 	</pre>
 	<h2>API</h2>
-	<label>拿登入來作例子 ( louis@tt.com / 111111 )</label><br />
-	<label>帳號：</label><input id="api-login-email"/>&nbsp;
+	<label>拿登入 API 來作例子。( louis@tt.com / 111111 )</label><br />
+	<label>輸入正確的帳密登入成功，輸入錯誤的帳密登入失敗。</label><br />
+	<label>帳號：</label><input type="email" id="api-login-email"/>&nbsp;
 	<label>密碼：</label><input type="password" id="api-login-password"/>
 	<button id="api-login-submit">登入</button>
 	<pre class="prettyprint">
@@ -83,8 +88,22 @@
 		});
 	});
 	</pre>
+	<h3>API 呼叫的參數組合</h3>
+	<pre class="prettyprint">
+	
+	nn.api(method, resourceURI);
+	nn.api(method, resourceURI, callback);
+	nn.api(method, resourceURI, parameter);
+	nn.api(method, resourceURI, parameter, callback);
+	</pre>
 	<h3>API 的錯誤處理</h3>
-	<label>以錯誤的方式呼叫API－不帶任何參數</label>&nbsp;<button id="api-fail-call">按我測試</button>
+	<p>
+		要處理 API 的錯誤情形，先必需透過 <i>nn.on()</i> 來掛載所要被執行的 callback 函式。<br />
+		目前支援的掛載的錯誤碼有 200, 201, 400, 401, 404, 500。<br />
+		如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br />
+		callback 函式以 <i>null</i> 代替可以取消掛載。
+	</p>
+	<button id="api-fail-call">按我測試</button>&nbsp;<label>以錯誤的方式呼叫API－不帶任何參數</label>
 	<pre class="prettyprint">
 	
 	nn.on(400, function(jqXHR, textStatus) {
@@ -101,19 +120,9 @@
 	});
 	</pre>
 	<p>
-		要處理 API 的錯誤情形，先必需透過 nn.on() 來掛載所要被執行的 callback 函式。<br />
-		目前支援的掛載的錯誤碼有 200, 201, 400, 401, 404, 500。<br />
-		如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br />
-		callback 函式以 <i>null</i> 代替可以取消掛載。
+		<small><b>註：由於 jQuery 在 ajax 錯誤處理的部分並不會對回傳的信息作 JSON 的解析。<br />
+		所以，API server 在 4XX 或 5XX 的情形下會選擇以 plain text 的方式回應，而不是 JSON 的格式。</b></small>
 	</p>
-	<p>API 允許呼叫的參數組合：</p>
-	<pre class="prettyprint">
-	
-	nn.api(method, resourceURI);
-	nn.api(method, resourceURI, callback);
-	nn.api(method, resourceURI, parameter);
-	nn.api(method, resourceURI, parameter, callback);
-	</pre>
 	<br />
 </body>
 </html>

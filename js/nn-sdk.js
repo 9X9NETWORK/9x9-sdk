@@ -1,5 +1,11 @@
 /**
- * nn.js
+ * 9x9 SDK (nn-sdk.js)
+ *
+ * Please refer to http://202.5.224.193/louis/9x9-sdk-usage/ for usage
+ *
+ * @author	Louis Jeng <louis.jeng@9x9.tv>
+ * @version	0.0.1
+ * @since	2012-08-23
  */
 
 var nn = { };
