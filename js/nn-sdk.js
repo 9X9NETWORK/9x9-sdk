@@ -157,5 +157,13 @@ var nn = { };
 		'debug':   true
 	};
 	
+	nn.getFileTypeByName = function(name) {
+		
+		if (typeof name == 'undefined' || name == null || name == '' || name.indexOf('.') <= 0) {
+			return '';
+		}
+		return name.substr(name.indexOf('.'));
+	};
+	
 })(nn);
 

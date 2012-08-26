@@ -123,6 +123,43 @@
 		<small><b>註：由於 jQuery 在 ajax 錯誤處理的部分並不會對回傳的信息作 JSON 的解析。<br />
 		所以，API server 在 4XX 或 5XX 的情形下會選擇以 plain text 的方式回應，而不是 JSON 的格式。</b></small>
 	</p>
+	<h2>附錄</h2>
+	<h3>api-login.php</h3>
+	<pre class="prettyprint">
+
+&lt;?php
+	
+	if (!isset($_REQUEST["email"]) || !isset($_REQUEST["password"])) {
+		
+		header("HTTP/1.1 400 Missing Parameter");
+		header("Content-Type: application/json");
+		
+		echo "missing email or password";
+		
+		exit;
+	}
+	
+	header("HTTP/1.1 200 OK");
+	header("Content-Type: application/json");
+	
+	if ($_REQUEST["email"] == "louis@tt.com" &amp;&amp;
+		$_REQUEST["password"] == "111111") {
+		
+		$response = array (
+			"name"   =&gt; "Louis",
+			"email"  =&gt; "louis@tt.com",
+			"type"   =&gt; 1,
+			"gender" =&gt; 1
+		);
+		
+		echo json_encode($response);
+		
+	} else {
+		
+		echo json_encode(null);
+		
+	}
+	</pre>
 	<br />
 </body>
 </html>

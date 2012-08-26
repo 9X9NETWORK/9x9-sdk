@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="zh-tw">
+<head>
+	<title>Amazon S3 Browser Upload How-To</title>
+	<meta charset="UTF-8">
+	<link href="css/prettify.css" type="text/css" rel="stylesheet"/>
+	<link href="css/style.css" type="text/css" rel="stylesheet"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+	<script src="js/swfupload/swfupload.js"></script>
+	<script src="js/swfupload/swfupload.speed.js"></script>
+	<script src="js/jquery.progressbar.js"></script>
+	<script src="js/prettify.js"></script>
+	<script src="js/nn-sdk.js"></script>
+	<script src="js/s3.js"></script>
+</head>
+<body>
+	<h1 class="align-center">Amazon S3 Browser Upload How-To</h1>
+	<div class="align-center">By<br /><a href="mailto:louis.jeng@9x9.tv"><img src="http://goo.gl/2gC5w" alt="Louis Jeng"/></a><br /><i>2012.08.24</i></div>
+	<hr />
+	<p>
+		Amanzon S3 雖然不提供 PHP 等 script 的執行。但是它提供最基本瀏覽器上傳的功能，就好像我們上傳檔案到任一個執行 PHP 的 HTTP server 一樣。
+		它規定了一些必要上傳時所需的參數，這些參數只有 AWS secret key 才能計算出來。這裡我們的做法是，瀏覽器透過 API 取得這些參數的值。
+		這些參數值裡面包含了授權的資訊以及有效期限。
+	</p>
+	<p>
+		<img src="https://docs.google.com/drawings/pub?id=1w4a-Bz8PT_qroK7qbXavhuKZPq6LIaMI6PE8ekiby5k&amp;w=791&amp;h=535" alt="上傳流程圖">
+	</p>
+	<p>
+		為了達到圖形化的上傳按鈕以及上傳進度等效果，我們採用 FLASH 元件(<a href="http://www.swfupload.org/">SWFUpload</a>)來上傳檔案。
+		但理論上任何可以用來作網頁上傳的元件都應該適用，甚至基本的 HTML 所支援的網頁上傳功能也應該適用才是。
+	</p>
+	<p>
+		SWFUpload 我們採用最後的穩定版本 v2.2.0.1。但是官網提供的下載是用 FLEX3 所編譯成的 .swf 檔。
+		之前有些經驗在較新版的瀏覽器上跑，容易出錯。考量到可以跟新版的瀏覽器有比較佳的相容性，我們下載了原始碼，並以 FLEX4 編譯。
+		這裡是我們自己編譯的版本，請<a href="swfupload.zip">按我</a>下載。
+	</p>
+	<p>
+		另外這是 SWFUpload 的官方說明文件：<a href="http://demo.swfupload.org/Documentation/">SWFUpload v2.2.0.1 Documentation</a>
+	</p>
+	<p>
+		首先來說說取得授權的部分，<a href="https://docs.google.com/spreadsheet/ccc?key=0AvdPy8_8kin6dDR2ejE2QVNKLVd4U3ZqdmdLRUQ3RXc">CMS 3.2 API Reference</a>
+		有描述到的<code>/api/s3/attributes</code>。假設是以上傳 audio 為例，呼叫的參數會長得像這樣。
+		<br style="clean:both"/>
+	</p>
+	<pre class="prettyprint">
+	
+	var parameter = {
+		'prefix': 'cms',        // 檔名的前置字元
+		'type':   'audio',
+		'size':   312574800,    // 限制上傳大小為 300MB
+		'acl':    'public-read' // 上傳檔案的權限為公開讀取
+	};
+	</pre>
+	<p>
+		回傳的物件應該是長這樣。
+	</p>
+	<pre class="prettyprint">
+	
+	var s3attr = {
+		'bucket': '9x9tmp-ds',
+		'policy': 'eyAnZXhwaXJhdGlvbic6ICcyMDEyLTA4LTI0VDExOjM5OjAxLjc4N1onLCdjb25kaXRpb25zJzogW3sgJ2J1Y2tldCc6ICc5eDl0bXAnIH0sWyAnc3RhcnRzLXdpdGgnLCAnJGtleScsICcnXSx7ICdhY2wnOiAncHVibGljLXJlYWQnIH0sWyAnc3RhcnRzLXdpdGgnLCAnJENvbnRlbnQtVHlwZScsICcnIF0seyAnc3VjY2Vzc19hY3Rpb25fc3RhdHVzJzogJzIwMScgfSxbICdzdGFydHMtd2l0aCcsICckRmlsZW5hbWUnLCAnJyBdLFsgJ2NvbnRlbnQtbGVuZ3RoLXJhbmdlJywgMCwgMTA3Mzc0MTgyNCBdLF19',
+		'signature': 'h5gxE4NWCCAvroYZQMv0NN2LpHQ=',
+		'id': 'KAIUZXV6OFX5RK3QR9EQ'
+	};
+	</pre>
+	<p>
+		再來就是要組 SWFUpload() 所需要的參數。這部分會稍稍多點。
+	</p>
+	<pre class="prettyprint">
+	
+	var settings = {
+		flash_url:               'http://202.5.224.193/louis/9x9-sdk-usage/js/swfupload/swfupload.swf',
+		upload_url:              'http://' + s3attr['bucket'] + '.s3.amazonaws.com/', // http://9x9tmp-ds.s3.amazonaws.com/
+		file_size_limit:         parameter['size'],
+		file_types:              '*.mp3',
+		file_types_description:  nn._('Audio Files'),
+		file_post_name:          'file', // hardcode
+		button_placeholder:      $('#s3-upload-btn').get(0), // 按鈕放置處的 DOM
+		button_image_url:        'http://202.5.224.193/louis/9x9-sdk-usage/img/btn-upload.png', // 按鈕的圖檔，四幅式
+		button_width:            '95',
+		button_height:           '32',
+		button_action:           SWFUpload.BUTTON_ACTION.SELECT_FILE, // hardcode
+		button_cursor:           SWFUpload.CURSOR.HAND, // hardcode
+		button_window_mode :     SWFUpload.WINDOW_MODE.OPAQUE, // hardcode
+		http_success :           [ 201 ],
+		                         // 名種 callback 函式 //
+		upload_progress_handler: handlerUploadProgress,
+		upload_success_handler:  handlerUploadSuccess,
+		upload_error_handler:    handlerUploadError,
+		file_queued_handler:     handlerFileQueue,
+		                         // Debug Mode //
+		debug:                   false
+	};
+	</pre>
+	<p>
+		接下來產生一個新的 SWFUpload 物件，上傳按鈕就出現。
+	</p>
+	<pre class="prettyprint">
+	
+	var swfupload = new SWFUpload(settings);
+	</pre>
+	<p>
+		<div class="float-left" id="s3-upload-placeholder"><button id="s3-upload-btn"></button></div>
+		<div class="float-left" id="file-name-holder"></div>
+		<div class="float-left" id="cancel-btn-holder"></div>
+		<div class="float-left" id="progress-bar"></div>
+		<div class="float-left" id="eta"></div>
+	</p>
+	<br style="clear:both"/>
+	<p>
+		上面還並未將所有程式碼詳盡列出，關於完整的程式碼請參考 <a href="js/s3.js">s3.js</a>
+	</p>
+	<hr />
+	<h4>參考資料</h4>
+	<ol>
+		<li><a href="http://doc.s3.amazonaws.com/proposals/post.html">Amazon Simple Storage Service: Browser-Based Uploads using POST Proposal</a></li>
+	</ol>
+	
+</body>
+</html>

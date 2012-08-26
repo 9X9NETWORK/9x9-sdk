@@ -2,9 +2,21 @@ h2 {
 	text-decoration: underline;
 	padding: 0 0.2em 0 0.2em;
 }
+code {
+	background-color: #ddd;
+	padding: 0 0.25em 0 0.25em;
+	margin: 0 0.25em 0 0.25em;
+}
 .align-right {
 	text-align: right;
 }
 .align-center {
 	text-align: center;
+}
+.float-right {
+	float: right;
+}
+.float-left {
+	float: left;
+	margin-left: 0.5em;
 }
