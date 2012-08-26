@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="zh-tw">
+<head>
+	<title>YouTube Connect</title>
+	<meta charset="UTF-8">
+	<link href="css/style.css" type="text/css" rel="stylesheet"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+	<script src="js/gwt-oauth2.js"></script>
+	<script src="js/nn-sdk.js"></script>
+	<script src="js/youtube-connect.js"></script>
+</head>
+<body>
+<img width="200" src="img/youtube.jpg" alt="youtube logo"/>
+<h3>YouTube Connect sample page</h3>
+<ul>
+	<li>目前使用 gwt-oauth2.js 來作 OAtuh，另外 <a href="https://code.google.com/p/google-api-javascript-client/">google-api-javascript-client</a> 作法還在研究中</li>
+	<li>Client ID 要到 <a href="https://code.google.com/apis/console/">Google APIs Consle</a> 申請</li>
+	<li>在申請 Client ID 時需要綁定一個網域名，以這個範例為例，網域名為 teltel.co.cc</li>
+	<li>如果遇到 oauthWindow.html 不存在的問題，請下載 <a href="js/oauthWindow.html">oauthWindow.html</a> 放到與 gwt-oauth2.js 相同目錄</li>
+</ul>
+<button id="youtube-connect">我的播放清單</button>
+<br />
+<br />
+<i><a target="_blank" href="js/youtube-connect.js">youtube-connect.js</a></i> 原始碼
+</body>

@@ -3,8 +3,8 @@
 <head>
 	<title>Amazon S3 Browser Upload How-To</title>
 	<meta charset="UTF-8">
-	<link href="css/prettify.css" type="text/css" rel="stylesheet"/>
 	<link href="css/style.css" type="text/css" rel="stylesheet"/>
+	<link href="css/prettify.css" type="text/css" rel="stylesheet"/>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
 	<script src="js/swfupload/swfupload.js"></script>
 	<script src="js/swfupload/swfupload.speed.js"></script>
@@ -58,7 +58,7 @@
 	
 	var s3attr = {
 		'bucket': '9x9tmp-ds',
-		'policy': 'eyAnZXhwaXJhdGlvbic6ICcyMDEyLTA4LTI0VDExOjM5OjAxLjc4N1onLCdjb25kaXRpb25zJzogW3sgJ2J1Y2tldCc6ICc5eDl0bXAnIH0sWyAnc3RhcnRzLXdpdGgnLCAnJGtleScsICcnXSx7ICdhY2wnOiAncHVibGljLXJlYWQnIH0sWyAnc3RhcnRzLXdpdGgnLCAnJENvbnRlbnQtVHlwZScsICcnIF0seyAnc3VjY2Vzc19hY3Rpb25fc3RhdHVzJzogJzIwMScgfSxbICdzdGFydHMtd2l0aCcsICckRmlsZW5hbWUnLCAnJyBdLFsgJ2NvbnRlbnQtbGVuZ3RoLXJhbmdlJywgMCwgMTA3Mzc0MTgyNCBdLF19',
+		'policy': 'eyAnZXhwaXJhdGlvbic6ICcyMDEyLTA4LTI0VDExOjM5OjAxLjc4N1onLCdjb25kaXRpb25zJ....TRUNCATED',
 		'signature': 'h5gxE4NWCCAvroYZQMv0NN2LpHQ=',
 		'id': 'KAIUZXV6OFX5RK3QR9EQ'
 	};
@@ -99,21 +99,19 @@
 	
 	var swfupload = new SWFUpload(settings);
 	</pre>
-	<p>
-		<div class="float-left" id="s3-upload-placeholder"><button id="s3-upload-btn"></button></div>
-		<div class="float-left" id="file-name-holder"></div>
-		<div class="float-left" id="cancel-btn-holder"></div>
-		<div class="float-left" id="progress-bar"></div>
-		<div class="float-left" id="eta"></div>
-	</p>
+	<div class="float-left" id="s3-upload-placeholder"><button id="s3-upload-btn"></button></div>
+	<div class="float-left" id="file-name-holder"></div>
+	<div class="float-left" id="cancel-btn-holder"></div>
+	<div class="float-left" id="progress-bar"></div>
+	<div class="float-left" id="eta"></div>
 	<br style="clear:both"/>
 	<p>
-		上面還並未將所有程式碼詳盡列出，關於完整的程式碼請參考 <a href="js/s3.js">s3.js</a>
+		上面還並未將所有程式碼詳盡列出，關於完整的程式碼請參考 <i><a target="_blank" href="js/s3.js">s3.js</a></i>
 	</p>
 	<hr />
 	<h4>參考資料</h4>
 	<ol>
-		<li><a href="http://doc.s3.amazonaws.com/proposals/post.html">Amazon Simple Storage Service: Browser-Based Uploads using POST Proposal</a></li>
+		<li><i>Amazon Simple Storage Service: <a target="_blank" href="http://doc.s3.amazonaws.com/proposals/post.html">Browser-Based Uploads using POST Proposal</a></i></li>
 	</ol>
 	
 </body>
