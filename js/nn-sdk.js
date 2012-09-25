@@ -59,7 +59,7 @@ var nn = { };
 				if (typeof console.debug == 'function') {
 					console.debug(message);
 				} else if (typeof console.log == 'function') {
-					console.log('[v] ' + message);
+					console.log(message);
 				}
 				break;
 				
