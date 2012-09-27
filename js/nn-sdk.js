@@ -3,6 +3,16 @@
  *
  * Please refer to http://202.5.224.193/louis/9x9-sdk-usage/ for usage
  *
+ * ChangeLog:
+ *
+ *   + 2012-08-23 v0.0.1 by Louis
+ *     - first version
+ *     - api(), log(), i18n()
+ *
+ *   + 2012-09-27 v0.0.2 by Louis
+ *     - nn.on() multiple hook
+ *     - nn.api() supports YouTube API
+ *
  * @author	Louis Jeng <louis.jeng@9x9.tv>
  * @version	0.0.1
  * @since	2012-08-23
@@ -12,10 +22,20 @@ var nn = { };
 
 (function(nn) {
 	
-	nn.initialize = function() {
-		// NOTE: 'this' is denote 'nn' object itself, but not always.
+	nn.initialize = function(callback) {
+		// NOTE: 'this' is denote 'nn' object itself, but not always does.
+        
+        if (typeof $ == 'undefined') {
+            nn.log('nn: jQuery is missing!', 'error');
+            return;
+        }
 		
 		nn.log('nn: initialized');
+        
+        if (typeof callback == 'function') {
+            return callback(nn);
+        }
+        return nn;
 	};
 	
 	nn.log = function(message, type) {
@@ -89,10 +109,11 @@ var nn = { };
 				localCallback = callback;
 		}
 		
-		var jqAjax = $.ajax({
+		var _dfd = $.ajax({
 			'url':        resourceURI,
 			'type':       method,
 			'data':       localParameter,
+            'dataType':   'json',
 			'statusCode': nn.apiHooks,
 			'success': function(data, textStatus, jqXHR) {
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
@@ -109,7 +130,7 @@ var nn = { };
 			}
 		});
 		
-		return jqAjax.promise();
+		return _dfd.promise();
 	};
 	
 	nn.apiHooks = {
@@ -123,7 +144,11 @@ var nn = { };
 	};
 	
 	nn.on = function(type, hook) {
-		if (typeof nn.apiHooks[type] != 'undefined') {
+        if ($.isArray(type)) {
+            $.each(type, function(i, item) {
+                nn.on(item, hook);
+            });
+		} else if (typeof nn.apiHooks[type] != 'undefined') {
 			nn.log('nn.on: hook on [' + type + ']');
 			nn.apiHooks[type] = hook;
 		}

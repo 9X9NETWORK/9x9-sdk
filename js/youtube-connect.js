@@ -18,14 +18,17 @@ $(function() {
 			nn.log('token = ' + token);
 			nn.log(oauth2);
 			
-			var url = 'http://gdata.youtube.com/feeds/api/users/default/playlists?callback=?';
+            nn.on([ 400, 200 ], function(jqHXR, textStatus) {
+                nn.log('hook: ' + textStatus);
+            });
+			var url = 'http://gdata.youtube.com/feeds/api/users/default/playlists';
 			var parameter = {
 				'max-results':  15,
 				'v':            2,
-				'alt':          'json-in-script',
+				'alt':          'json',
 				'access_token': token
 			};
-			$.getJSON(url, parameter, function(data) {
+			nn.api('GET', url, parameter, function(data) {
 				nn.log(data);
 				
 				var message = '播放清單：\n';
