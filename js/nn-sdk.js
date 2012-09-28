@@ -13,9 +13,13 @@
  *     - nn.on() multiple hook
  *     - nn.api() supports YouTube API
  *
+ * download url:
+ *
+ *   http://dev.teltel.com/louis/9x9-sdk-usage/js/release/v0.0.2/nn-sdk.js
+ *
  * @author	Louis Jeng <louis.jeng@9x9.tv>
- * @version	0.0.1
- * @since	2012-08-23
+ * @version	0.0.2
+ * @since	2012-09-28
  */
 
 var nn = { };
@@ -40,9 +44,14 @@ var nn = { };
 	
 	nn.log = function(message, type) {
 	
-		if (!window.console || !window.console.log || !console || !console.log)
-			return;
-	
+        var blackbird = function() { };
+        
+        if ((typeof window == 'undefined' || typeof window.console == 'undefined' || typeof window.console.log == 'undefined') &&
+            (typeof console == 'undefined' || typeof console.log == 'undefined')) {
+            
+            return;
+        }
+        
 		if (typeof type == 'undefined') {
 			type = 'info';
 		} else if (typeof nn.logTypes[type] == 'undefined') {
