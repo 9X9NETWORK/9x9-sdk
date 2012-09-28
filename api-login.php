@@ -20,7 +20,8 @@
 			"name"   => "Louis",
 			"email"  => "louis@tt.com",
 			"type"   => 1,
-			"gender" => 1
+			"gender" => 1,
+            "lang"   => 'zh'
 		);
 		
 		echo json_encode($response);

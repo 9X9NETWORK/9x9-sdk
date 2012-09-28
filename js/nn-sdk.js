@@ -128,9 +128,6 @@ var nn = { };
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
 				nn.log('nn.api: textStatus = ' + textStatus, 'debug');
 				nn.log(data, 'debug');
-				if (typeof localCallback == 'function') {
-					localCallback(data);
-				}
 			},
 			'error': function(jqXHR, textStatus) {
 				nn.log('nn.api: ' + jqXHR.status + ' ' + jqXHR.statusText, 'warning');
@@ -138,9 +135,47 @@ var nn = { };
 				nn.log('nn.api: responseText = ' + jqXHR.responseText);
 			}
 		});
+        if (typeof localCallback == 'function') {
+            
+            _dfd.done(localCallback);
+        }
 		
 		return _dfd.promise();
 	};
+    
+    nn.when = function(promises) {
+        
+        var _dfd = $.Deferred();
+        var count = promises.length;
+        
+        if (!$.isArray(promises)) {
+            nn.log('nn.when(): parameter error', 'error');
+            _dfd.reject();
+            return _dfd.promise();
+        }
+        
+        nn.log('nn.when(): ' + count + ' promises');
+        
+        $.each(promises, function(i, promise) {
+            
+            promise.then(function() {
+                
+                count = count - 1;
+                nn.log('nn.when(): promise ' + i + ' commited, ' + count + ' promises left');
+                if (count == 0) {
+                    _dfd.resolve();
+                }
+                
+            }, function() {
+                
+                nn.log('nn.when(): promise ' + i + ' not commited ' + count + ' promises left', 'warning');
+                _dfd.reject();
+                
+            });
+        });
+        
+        return _dfd.promise();
+    },
 	
 	nn.apiHooks = {
 		200: function(jqXHR, textStatus) { },
