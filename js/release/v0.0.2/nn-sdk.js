@@ -13,9 +13,13 @@
  *     - nn.on() multiple hook
  *     - nn.api() supports YouTube API
  *
+ * download url:
+ *
+ *   http://dev.teltel.com/louis/9x9-sdk-usage/js/release/v0.0.2/nn-sdk.js
+ *
  * @author	Louis Jeng <louis.jeng@9x9.tv>
- * @version	0.0.1
- * @since	2012-08-23
+ * @version	0.0.2
+ * @since	2012-09-28
  */
 
 var nn = { };
@@ -40,9 +44,14 @@ var nn = { };
 	
 	nn.log = function(message, type) {
 	
-		if (!window.console || !window.console.log || !console || !console.log)
-			return;
-	
+        var blackbird = function() { };
+        
+        if ((typeof window == 'undefined' || typeof window.console == 'undefined' || typeof window.console.log == 'undefined') &&
+            (typeof console == 'undefined' || typeof console.log == 'undefined')) {
+            
+            return;
+        }
+        
 		if (typeof type == 'undefined') {
 			type = 'info';
 		} else if (typeof nn.logTypes[type] == 'undefined') {
@@ -88,7 +97,7 @@ var nn = { };
 		}
 	};
 	
-	nn.api = function(method, resourceURI, parameter, callback) {
+	nn.api = function(method, resourceURI, parameter, callback, dataType) {
 		
 		nn.log('nn.api: ' + method + ' "' + resourceURI + '"');
 		nn.log(parameter, 'debug');
@@ -100,28 +109,41 @@ var nn = { };
 		
 		var localParameter = null;
 		var localCallback = null;
+        var localDataType = null;
 		
 		if (typeof parameter == 'function') {
 			localCallback = parameter;
-		} else if (typeof parameter != 'undefined') {
+            if (typeof callback == 'string') {
+                localDataType = callback;
+                nn.log('dataType = ' + localDataType);
+            }
+		} else if (typeof parameter == 'object') {
 			localParameter = parameter;
-			if (typeof callback == 'function')
+			if (typeof callback == 'function') {
 				localCallback = callback;
-		}
+                if (typeof dataType == 'string') {
+                    localDataType = dataType;
+                    nn.log('dataType = ' + localDataType);
+                }
+            } else if (typeof callback == 'string') {
+                    localDataType = callback;
+                    nn.log('dataType = ' + localDataType);
+            }
+		} else if (typeof parameter == 'string') {
+            localDataType = parameter;
+            nn.log('dataType = ' + localDataType);
+        }
 		
 		var _dfd = $.ajax({
 			'url':        resourceURI,
 			'type':       method,
 			'data':       localParameter,
-            'dataType':   'json',
+            'dataType':   localDataType,
 			'statusCode': nn.apiHooks,
 			'success': function(data, textStatus, jqXHR) {
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
 				nn.log('nn.api: textStatus = ' + textStatus, 'debug');
 				nn.log(data, 'debug');
-				if (typeof localCallback == 'function') {
-					localCallback(data);
-				}
 			},
 			'error': function(jqXHR, textStatus) {
 				nn.log('nn.api: ' + jqXHR.status + ' ' + jqXHR.statusText, 'warning');
@@ -129,9 +151,47 @@ var nn = { };
 				nn.log('nn.api: responseText = ' + jqXHR.responseText);
 			}
 		});
+        if (typeof localCallback == 'function') {
+            
+            _dfd.done(localCallback);
+        }
 		
 		return _dfd.promise();
 	};
+    
+    nn.when = function(promises) {
+        
+        var _dfd = $.Deferred();
+        var count = promises.length;
+        
+        if (!$.isArray(promises)) {
+            nn.log('nn.when(): parameter error', 'error');
+            _dfd.reject();
+            return _dfd.promise();
+        }
+        
+        nn.log('nn.when(): ' + count + ' promises');
+        
+        $.each(promises, function(i, promise) {
+            
+            promise.then(function() {
+                
+                count = count - 1;
+                nn.log('nn.when(): promise ' + i + ' commited, ' + count + ' promises left');
+                if (count == 0) {
+                    _dfd.resolve();
+                }
+                
+            }, function() {
+                
+                nn.log('nn.when(): promise ' + i + ' not commited ' + count + ' promises left', 'warning');
+                _dfd.reject();
+                
+            });
+        });
+        
+        return _dfd.promise();
+    },
 	
 	nn.apiHooks = {
 		200: function(jqXHR, textStatus) { },
@@ -183,8 +243,19 @@ var nn = { };
 		'info':    true, // turns log on/off separately
 		'warning': true,
 		'error':   true,
-		'debug':   true
+		'debug':   false
 	};
+    
+    nn.debug = function(turnOn) {
+        if (typeof turnOn == 'undefined') {
+            return nn.logTypes['debug'];
+        }
+        if (turnOn) {
+            nn.logTypes['debug'] = true;
+        } else {
+            nn.logTypes['debug'] = false;
+        }
+    };
 	
 	nn.getFileTypeByName = function(name) {
 		

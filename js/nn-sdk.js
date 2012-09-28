@@ -97,7 +97,7 @@ var nn = { };
 		}
 	};
 	
-	nn.api = function(method, resourceURI, parameter, callback) {
+	nn.api = function(method, resourceURI, parameter, callback, dataType) {
 		
 		nn.log('nn.api: ' + method + ' "' + resourceURI + '"');
 		nn.log(parameter, 'debug');
@@ -109,20 +109,36 @@ var nn = { };
 		
 		var localParameter = null;
 		var localCallback = null;
+        var localDataType = null;
 		
 		if (typeof parameter == 'function') {
 			localCallback = parameter;
-		} else if (typeof parameter != 'undefined') {
+            if (typeof callback == 'string') {
+                localDataType = callback;
+                nn.log('dataType = ' + localDataType);
+            }
+		} else if (typeof parameter == 'object') {
 			localParameter = parameter;
-			if (typeof callback == 'function')
+			if (typeof callback == 'function') {
 				localCallback = callback;
-		}
+                if (typeof dataType == 'string') {
+                    localDataType = dataType;
+                    nn.log('dataType = ' + localDataType);
+                }
+            } else if (typeof callback == 'string') {
+                    localDataType = callback;
+                    nn.log('dataType = ' + localDataType);
+            }
+		} else if (typeof parameter == 'string') {
+            localDataType = parameter;
+            nn.log('dataType = ' + localDataType);
+        }
 		
 		var _dfd = $.ajax({
 			'url':        resourceURI,
 			'type':       method,
 			'data':       localParameter,
-            'dataType':   'json',
+            'dataType':   localDataType,
 			'statusCode': nn.apiHooks,
 			'success': function(data, textStatus, jqXHR) {
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
@@ -227,8 +243,19 @@ var nn = { };
 		'info':    true, // turns log on/off separately
 		'warning': true,
 		'error':   true,
-		'debug':   true
+		'debug':   false
 	};
+    
+    nn.debug = function(turnOn) {
+        if (typeof turnOn == 'undefined') {
+            return nn.logTypes['debug'];
+        }
+        if (turnOn) {
+            nn.logTypes['debug'] = true;
+        } else {
+            nn.logTypes['debug'] = false;
+        }
+    };
 	
 	nn.getFileTypeByName = function(name) {
 		
