@@ -19,7 +19,10 @@ var nn = { };
 	};
 	
 	nn.log = function(message, type) {
-		
+	
+		if (!window.console || !window.console.log || !console || !console.log)
+			return;
+	
 		if (typeof type == 'undefined') {
 			type = 'info';
 		} else if (typeof nn.logTypes[type] == 'undefined') {
@@ -114,6 +117,7 @@ var nn = { };
 		201: function(jqXHR, textStatus) { },
 		400: function(jqXHR, textStatus) { },
 		401: function(jqXHR, textStatus) { },
+		403: function(jqXHR, textStatus) { },
 		404: function(jqXHR, textStatus) { },
 		500: function(jqXHR, textStatus) { }
 	};
