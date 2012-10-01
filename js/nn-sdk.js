@@ -175,22 +175,30 @@ var nn = { };
         }
         
         nn.log('nn.when(): ' + count + ' promises');
+        var resolved = true;
         
         $.each(promises, function(i, promise) {
             
-            promise.then(function() {
+            promise.done(function() {
+                
+                nn.log('nn.when(): promise ' + i + ' commited');
+                
+            }).fail(function() {
+                
+                nn.log('nn.when(): promise ' + i + ' not commited', 'warning');
+                resolved = false;
+                
+            }).always(function() {
                 
                 count = count - 1;
-                nn.log('nn.when(): promise ' + i + ' commited, ' + count + ' promises left');
+                nn.log(count + ' promises left');
                 if (count == 0) {
-                    _dfd.resolve();
+                    if (resolved) {
+                        _dfd.resolve();
+                    } else {
+                        _dfd.reject();
+                    }
                 }
-                
-            }, function() {
-                
-                nn.log('nn.when(): promise ' + i + ' not commited ' + count + ' promises left', 'warning');
-                _dfd.reject();
-                
             });
         });
         
