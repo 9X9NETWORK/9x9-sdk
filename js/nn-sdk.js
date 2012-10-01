@@ -110,14 +110,16 @@ var nn = { };
 		var localParameter = null;
 		var localCallback = null;
         var localDataType = null;
-		
+        
 		if (typeof parameter == 'function') {
 			localCallback = parameter;
             if (typeof callback == 'string') {
                 localDataType = callback;
                 nn.log('dataType = ' + localDataType);
             }
-		} else if (typeof parameter == 'object') {
+		} else if (typeof parameter == 'object' || (typeof parameter == 'string' && 
+                                                    $.inArray(parameter, [ 'xml', 'html', 'script', 'json', 'text' ]) < 0)) {
+            
 			localParameter = parameter;
 			if (typeof callback == 'function') {
 				localCallback = callback;
@@ -130,6 +132,7 @@ var nn = { };
                     nn.log('dataType = ' + localDataType);
             }
 		} else if (typeof parameter == 'string') {
+            
             localDataType = parameter;
             nn.log('dataType = ' + localDataType);
         }
@@ -137,6 +140,7 @@ var nn = { };
 		var _dfd = $.ajax({
 			'url':        resourceURI,
 			'type':       method,
+            'cache':      false,
 			'data':       localParameter,
             'dataType':   localDataType,
 			'statusCode': nn.apiHooks,
