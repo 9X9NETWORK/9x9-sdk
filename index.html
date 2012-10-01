@@ -91,15 +91,12 @@
 	<h3>API 呼叫的參數組合</h3>
 	<pre class="prettyprint">
 	
-	nn.api(method, resourceURI);
-	nn.api(method, resourceURI, callback);
-	nn.api(method, resourceURI, parameter);
-	nn.api(method, resourceURI, parameter, callback);
+	nn.api(method, resourceURI [, parameter] [, callback] [, dataType]); // dataType 請參考 jQuery.ajax() dataType
 	</pre>
 	<h3>API 的錯誤處理</h3>
 	<p>
 		要處理 API 的錯誤情形，先必需透過 <i>nn.on()</i> 來掛載所要被執行的 callback 函式。<br />
-		目前支援的掛載的錯誤碼有 200, 201, 400, 401, 404, 500。<br />
+		目前支援的掛載的錯誤碼有 200, 201, 400, 401, 403, 404, 500。<br />
 		如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br />
 		callback 函式以 <i>null</i> 代替可以取消掛載。
 	</p>
@@ -119,10 +116,84 @@
 		});
 	});
 	</pre>
+    <p>
+        或者一次掛載多個錯誤處理。
+    </p>
+    <pre class="prettyprint">
+    
+	nn.on([ 400, 401, 403, 404 ], function(jqXHR, textStatus) {
+		
+		alert(textStatus + ": " + jqXHR.responseText);
+	});
+    </pre>
 	<p>
 		<small><b>註：由於 jQuery 在 ajax 錯誤處理的部分並不會對回傳的信息作 JSON 的解析。<br />
 		所以，API server 在 4XX 或 5XX 的情形下會選擇以 plain text 的方式回應，而不是 JSON 的格式。</b></small>
 	</p>
+    <h3>進階 API 的使用：呼叫 YouTube API</h3>
+    <p>你可以用 nn.api() 來呼叫 YouTube API。</p>
+    <button id="api-youtube">呼叫 YouTube API</button>
+    <pre class="prettyprint">
+    
+    $('#api-youtube').click(function() {
+        
+        var param = {
+            'v':   2,
+            'alt': 'json'
+        };
+        
+        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/shining0810', param, function(data) {
+            
+            var entry = data.entry;
+            
+            nn.log(entry); // 請觀察 log
+            
+            alert(entry.title.$t);
+        });
+        
+    });
+    </pre>
+    <h3>進階 API 的使用：pipe()</h3>
+    <p>與 jQuery pipe() 相同用法，後進入 pipe() 者會等先進入者執行結束才開始，並接收前者所回傳的值。<br />
+    程式碼範例是由 YouTube 的 user ID 取得該 user 的播放清單列表。再從列表中取得第一個播放清單。<br />
+    再從播放清單中取得第一個影片的資訊。全部用 pipe() 串在一起。</p>
+    <button id="api-pipe">pipe() 範例</button>
+    <pre class="prettyprint">
+    
+    $('#api-pipe').click(function() {
+        
+        var param = { 'v': 2, 'alt': 'json' };
+        var promise = nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/shining0810', param);
+
+        promise.pipe(function(data) {
+            
+            var entry = data.entry;
+            var playlistUrl = entry.gd$feedLink[4].href;
+            
+            return nn.api('GET', playlistUrl, param);
+            
+        }).pipe(function(data) {
+            
+            var entry = data.feed.entry[0];
+            nn.log(entry);
+            
+            return nn.api('GET', entry.content.src, param);
+            
+        }).pipe(function(data) {
+            
+            var entry = data.feed.entry[0];
+            nn.log(entry);
+            
+            return entry.media$group.media$title.$t;
+            
+        }).done(function(title) {
+            
+            alert(title);
+            
+        });
+
+    });
+    </pre>
 	<h2>附錄</h2>
 	<h3>api-login.php</h3>
 	<pre class="prettyprint">

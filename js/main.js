@@ -69,6 +69,58 @@ $(function() {
 			// 這裡不會被執行
 		});
 	});
-	
+    
+    $('#api-youtube').click(function() {
+        
+        var param = {
+            'v':   2,
+            'alt': 'json'
+        };
+        
+        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/shining0810', param, function(data) {
+            
+            var entry = data.entry;
+            
+            nn.log(entry); // 請觀察 log
+            
+            alert(entry.title.$t);
+        });
+        
+    });
+    
+    $('#api-pipe').click(function() {
+        
+        var param = { 'v': 2, 'alt': 'json' };
+        var promise = nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/shining0810', param);
+
+        promise.pipe(function(data) {
+            
+            var entry = data.entry;
+            var playlistUrl = entry.gd$feedLink[4].href;
+            
+            return nn.api('GET', playlistUrl, param);
+            
+        }).pipe(function(data) {
+            
+            var entry = data.feed.entry[0];
+            nn.log(entry);
+            
+            return nn.api('GET', entry.content.src, param);
+            
+        }).pipe(function(data) {
+            
+            var entry = data.feed.entry[0];
+            nn.log(entry);
+            
+            return entry.media$group.media$title.$t;
+            
+        }).done(function(title) {
+            
+            alert(title);
+            
+        });
+
+    });
+    
 });
 
