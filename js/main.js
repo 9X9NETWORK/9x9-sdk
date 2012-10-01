@@ -122,5 +122,31 @@ $(function() {
 
     });
     
+    $('#api-when').click(function() {
+        
+        var videoIds = [
+            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'zmolcop0i-I',
+            'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
+            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM'
+        ];
+        
+        var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';
+        
+        var promises = [ ];
+        
+        $.each(videoIds, function(i, videoId) {
+            var promise = nn.api('GET', apiBaseUrl + videoId, 'v=2&alt=json', 'json');
+            promises.push(promise);
+        });
+        
+        var whenPromise = nn.when(promises);
+        
+        whenPromise.done(function() {
+            alert('done!');
+        }).fail(function() {
+            alert('fail!');
+        });
+    });
+    
 });
 

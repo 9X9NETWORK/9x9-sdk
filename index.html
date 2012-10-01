@@ -194,6 +194,44 @@
 
     });
     </pre>
+    <h3>進階 API 的使用：nn.when()</h3>
+    <p><span style="color:grey">v0.0.3</span><br />
+    nn.when() 是 $.when() 的改良版。原本 $.when() 只支援固定個數的 promise 傳入。
+    nn.when() 在實現上更加彈性，將 promise 以陣列的方式傳入，可以支援不固定個數的 promise。
+    nn.when() 會回傳一個新的 promise。新的 promise 在所傳入的所有 promise 皆被兌現後，
+    才會被兌現(<i> done() </i>)。如果傳入的 promise 中任一個無法被兌現，回傳的 promise 會觸發失敗(<i> fail() </i>)。
+    範例是以 Youtube API 呼叫為例，當所有的 API 都呼叫成功 done() 才會被觸發，否則 fail() 就會被觸發。
+    更詳細的用法請參考<a href="http://api.jquery.com/jQuery.when/">$.when()</a>。
+    </p>
+    <button id="api-when">nn.when() 範例</button>
+    <pre class="prettyprint">
+    
+    $('#api-when').click(function() {
+        
+        var videoIds = [
+            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'zmolcop0i-I',
+            'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
+            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM'
+        ];
+        
+        var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';
+        
+        var promises = [ ];
+        
+        $.each(videoIds, function(i, videoId) {
+            var promise = nn.api('GET', apiBaseUrl + videoId, 'v=2&amp;alt=json', 'json');
+            promises.push(promise);
+        });
+        
+        var whenPromise = nn.when(promises);
+        
+        whenPromise.done(function() {
+            alert('done!');
+        }).fail(function() {
+            alert('fail!');
+        });
+    });
+    </pre>
 	<h2>附錄</h2>
 	<h3>api-login.php</h3>
 	<pre class="prettyprint">
