@@ -66,6 +66,32 @@
 		alert(nn._('Bye bye!'));
 	});
 	</pre>
+	<h3>多階層式的語言包結構及其呼叫方式</h3>
+	<button id="i18n-btn-4">hello!my name is Louis</button>
+	<pre class="prettyprint">
+
+        langpack = {
+            "who": {
+                "my name is {0}": "我叫{0}"
+            },
+            "misc": {
+                "symbol": {
+                    "?": "？",
+                    ".": "。",
+                    ",": "，"
+                }
+            },
+            "hello!": "你好！"
+        };
+        nn.i18n(langpack);
+        $('#i18n-btn-4').click(function() {
+
+            var greeting = nn._("hello!")
+                         + nn._(["who", "my name is {0}"], "louis")
+                         + nn._(["misc", "symbol", "."]);
+            alert(nn._(greeting));
+        });
+	</pre>
 	<h2>API</h2>
 	<label>拿登入 API 來作例子。( louis@tt.com / 111111 )</label><br />
 	<label>輸入正確的帳密登入成功，輸入錯誤的帳密登入失敗。</label><br />

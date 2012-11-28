@@ -40,6 +40,28 @@ $(function() {
 		
 		alert(nn._('Bye bye!'));
 	});
+
+    langpack = {
+        "who": {
+            "my name is {0}": "我叫{0}"
+        },
+        "misc": {
+            "symbol": {
+                "?": "？",
+                ".": "。",
+                ",": "，"
+            }
+        },
+        "hello!": "你好！"
+    };
+    nn.i18n(langpack);
+	$('#i18n-btn-4').click(function() {
+		
+        var greeting = nn._("hello!")
+                     + nn._(["who", "my name is {0}"], "louis")
+                     + nn._(["misc", "symbol", "."]);
+		alert(nn._(greeting));
+	});
 	
 	// api
 	
