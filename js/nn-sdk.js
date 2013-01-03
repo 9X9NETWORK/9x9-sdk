@@ -173,6 +173,7 @@ var nn = { };
         
         var _dfd = $.Deferred();
         var count = promises.length;
+        var countCommited = 0;
         
         if (!$.isArray(promises)) {
             nn.log('nn.when(): parameter error', 'error');
@@ -188,6 +189,7 @@ var nn = { };
             promise.done(function() {
                 
                 nn.log('nn.when(): promise ' + i + ' commited');
+                countCommited++;
                 
             }).fail(function() {
                 
@@ -199,10 +201,11 @@ var nn = { };
                 count = count - 1;
                 nn.log(count + ' promises left');
                 if (count == 0) {
+                    console.log('promises commited = ' + countCommited);
                     if (resolved) {
-                        _dfd.resolve();
+                        _dfd.resolve(countCommited);
                     } else {
-                        _dfd.reject();
+                        _dfd.reject(countCommited);
                     }
                 }
             });
