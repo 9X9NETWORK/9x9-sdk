@@ -109,7 +109,6 @@ var nn = { };
 	nn.api = function(method, resourceURI, parameter, callback, dataType) {
 		
 		nn.log('nn.api: ' + method + ' "' + resourceURI + '"');
-		nn.log(parameter, 'debug');
 		
 		if ($.inArray(method, ['PUT', 'GET', 'POST', 'DELETE', 'HEAD', 'OPTIONS']) == -1) {
 			nn.log('nn.api: not supported method', 'warning');
@@ -145,6 +144,8 @@ var nn = { };
             localDataType = parameter;
             nn.log('dataType = ' + localDataType);
         }
+
+		nn.log(localParameter, 'debug');
 		
 		var _dfd = $.ajax({
 			'url':        resourceURI,
