@@ -145,6 +145,11 @@ var nn = { };
 			return;
 		}
 		
+        var withCredentials = false;
+        if (resourceURI.indexOf('gdata.youtube.com') < 0) {
+            withCredentials = true;
+        }
+
 		var localParameter = null;
 		var localCallback = null;
         var localDataType = 'json';
@@ -185,7 +190,7 @@ var nn = { };
             'dataType':   localDataType,
 			'statusCode': nn.apiHooks,
             'xhrFields': {
-                'withCredentials': true
+                'withCredentials': withCredentials
             },
 			'success': function(data, textStatus, jqXHR) {
 				nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText);
