@@ -51,8 +51,11 @@ var nn = { };
             if (typeof callback == 'function') {
                 _dfd.done(callback);
             }
-            nn.log('nn: initialized');
-            return _dfd.resolve();
+            $(function() {
+                nn.log('nn: initialized');
+                _dfd.resolve();
+            });
+            return _dfd.promise();
         };
         if (typeof $ == 'object') {
             return _init();
