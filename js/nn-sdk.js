@@ -24,9 +24,13 @@
  *   + 2013-01-30 v0.0.5 by Louis
  *     - CORS cross domain support
  *
- * download latest release:
+ * To download the latest release:
  *
  *   http://dev.teltel.com/louis/9x9-sdk-usage/js/release/latest/nn-sdk.js
+ *
+ * To download the latest development:
+ *
+ *   http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js
  *
  * @author	Louis Jeng <louis.jeng@9x9.tv>
  */
@@ -34,23 +38,49 @@
 var nn = { };
 
 (function(nn) {
-	
+
 	nn.initialize = function(callback) {
 		// NOTE: 'this' is denote 'nn' object itself, but not always does.
-        
-        if (typeof $ == 'undefined') {
-            nn.log('nn: jQuery is missing!', 'error');
-            return;
+
+        var _init = function() {
+            if (typeof $ == 'undefined') {
+                return nn.log('nn: jQuery is still missing!', 'error');
+            }
+            nn.log('nn: jQuery is detected ' + $().jquery);
+            var _dfd = $.Deferred();
+            if (typeof callback == 'function') {
+                _dfd.done(callback);
+            }
+            nn.log('nn: initialized');
+            return _dfd.resolve();
+        };
+        if (typeof $ == 'object') {
+            return _init();
         }
-		
-		nn.log('nn: initialized');
-        
-        if (typeof callback == 'function') {
-            return callback(nn);
-        }
-        return nn;
+        nn.log('nn: jQuery is missing, but we can load it automatically.');
+        nn.load(nn.jQueryUrl, _init);
 	};
+
+    nn.init = nn.initialize;
 	
+    nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
+
+    nn.load = function(url, callback) {
+        if (typeof $ == 'object') {
+            // using jQuery
+            nn.log('nn: load JS by jQuery ' + url);
+            return $.getScript(url, callback);
+        }
+        // without using jQuery
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onload = callback;
+        nn.log('nn: load JS from ' + url);
+        head.appendChild(script);
+    };
+
 	nn.log = function(message, type) {
 	
         var blackbird = function() { };

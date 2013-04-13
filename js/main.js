@@ -2,13 +2,9 @@
  * Main
  */
 
-$(function() {
+nn.init(function() {
 	
 	prettyPrint();
-	
-	// intialize
-	
-	nn.initialize();
 	
 	// log
 	
