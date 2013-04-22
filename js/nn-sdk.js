@@ -57,7 +57,7 @@ var nn = { };
             });
             return _dfd.promise();
         };
-        if (typeof $ == 'object') {
+        if (typeof $ != 'undefined') {
             return _init();
         }
         nn.log('nn: jQuery is missing, but we can load it automatically.');
@@ -69,7 +69,7 @@ var nn = { };
     nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
 
     nn.load = function(url, callback) {
-        if (typeof $ == 'object') {
+        if (typeof $ != 'undefined') {
             // using jQuery
             nn.log('nn: load JS by jQuery ' + url);
             return $.getScript(url, callback);
@@ -312,6 +312,7 @@ var nn = { };
 		return result;
 	};
 	
+    // TODO: pack is a url
 	nn.i18n = function(pack) {
 		nn.langPack = $.extend(nn.langPack, pack);
 	};
