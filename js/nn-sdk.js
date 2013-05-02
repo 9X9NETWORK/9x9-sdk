@@ -66,7 +66,7 @@ var nn = { };
 
     nn.init = nn.initialize;
 	
-    nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
+    nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js';
 
     nn.load = function(url, callback) {
         if (typeof $ != 'undefined') {
@@ -161,7 +161,7 @@ var nn = { };
 			localCallback = parameter;
             if (typeof callback == 'string') {
                 localDataType = callback;
-                nn.log('dataType = ' + localDataType);
+                nn.log('nn.api: dataType = ' + localDataType);
             }
 		} else if (typeof parameter == 'object' || (typeof parameter == 'string' && 
                                                     $.inArray(parameter, [ 'xml', 'html', 'script', 'json', 'jsonp', 'text' ]) < 0)) {
@@ -171,19 +171,28 @@ var nn = { };
 				localCallback = callback;
                 if (typeof dataType == 'string') {
                     localDataType = dataType;
-                    nn.log('dataType = ' + localDataType);
+                    nn.log('nn.api: dataType = ' + localDataType);
                 }
             } else if (typeof callback == 'string') {
                     localDataType = callback;
-                    nn.log('dataType = ' + localDataType);
+                    nn.log('nn.api: dataType = ' + localDataType);
             }
 		} else if (typeof parameter == 'string') {
             
             localDataType = parameter;
-            nn.log('dataType = ' + localDataType);
+            nn.log('nn.api: dataType = ' + localDataType);
         }
 
 		nn.log(localParameter, 'debug');
+        
+        // workaround
+        if (method == 'DELETE' && localParameter) {
+            nn.log('nn.api: workaround');
+            var queryString = $.param(localParameter);
+            var conjunction = resourceURI.indexOf('?') < 0 ? '?' : '&';
+            resourceURI = [ resourceURI, queryString ].join(conjunction);
+            localParameter = null;
+        }
 		
 		var _dfd = $.ajax({
 			'url':        resourceURI,
