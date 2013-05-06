@@ -69,19 +69,42 @@ var nn = { };
     nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js';
 
     nn.load = function(url, callback) {
-        if (typeof $ != 'undefined') {
-            // using jQuery
-            nn.log('nn: load JS by jQuery ' + url);
-            return $.getScript(url, callback);
-        }
-        // without using jQuery
+
         var head = document.getElementsByTagName('head')[0];
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = url;
-        script.onload = callback;
-        nn.log('nn: load JS from ' + url);
-        head.appendChild(script);
+
+        // load css
+        if (url.substr(-4, 4) == '.css') {
+
+            var _dfd = $.Deferred();
+            var css = document.createElement('link');
+            css.type = "text/css";
+            css.rel = "stylesheet";
+            css.href = url;
+            css.onload = function() {
+                if (typeof callback == 'function') {
+                    _dfd.done(callback);
+                }
+                _dfd.resolve();
+            };
+            nn.log('nn.load: load CSS from ' + url);
+            head.appendChild(css);
+            return _dfd.promise();
+
+        } else {
+
+            if (typeof $ != 'undefined') {
+                // using jQuery
+                nn.log('nn.load: load JS by jQuery ' + url);
+                return $.getScript(url, callback);
+            }
+            // without using jQuery
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            script.onload = callback;
+            nn.log('nn.load: load JS from ' + url);
+            head.appendChild(script);
+        }
     };
 
 	nn.log = function(message, type) {
