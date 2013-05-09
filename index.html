@@ -19,16 +19,18 @@
 	<p>9x9 SDK 是用 Javascript 寫成，只要在網頁適當地方引入即可。請下載目前<a href="js/release/latest/nn-sdk.js">最新版本</a>。</p>
 	<h2>相依元件</h2>
 	<ul>
-		<li>jQuery-1.8.x</li>
+		<li>jQuery-1.9.x (自動載入)</li>
 	</ul>
 	<h2>初始化</h2>
-	<p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也</p>
+	<p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也。</p>
 	<pre class="prettyprint">
 	
-	$(function() {
-		nn.initialize();
-	});
+    nn.init(function() {
+        // put your code here
+        nn.log('Hello, world!');
+    });
 	</pre>
+	<p>如果說找不到 jQuery，它會自行載入。</p>
 	<h2>LOG</h2>
 	<pre class="prettyprint">
 	
@@ -246,6 +248,24 @@
             alert('done!');
         }).fail(function() {
             alert('fail!');
+        });
+    });
+    </pre>
+    <h2>Loader</h2>
+    <p><span style="color:grey">v0.0.6</span><br />
+    載入 CSS/JS 並套用至當前頁面。</p>
+    <button id="load-btn">載入 jQuery UI</button>&nbsp;<label>一但載入成功，按鈕會被置換成 jquery-ui 'smoothness' 的 theme</label>
+    <pre class="prettyprint">
+    
+    $('#load-btn').click(function() {
+        
+        var cssUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.css';
+        var jsUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js';
+        
+        nn.load(jsUrl, function() {
+            nn.load(cssUrl, function() {
+                $('#load-btn').button();
+            });
         });
     });
     </pre>

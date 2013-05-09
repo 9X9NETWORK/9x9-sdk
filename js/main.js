@@ -158,5 +158,17 @@ nn.init(function() {
         });
     });
     
+    $('#load-btn').click(function() {
+        
+        var cssUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.css';
+        var jsUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js';
+        
+        nn.load(jsUrl, function() {
+            nn.load(cssUrl, function() {
+                $('#load-btn').button();
+            });
+        });
+    });
+    
 });
 
