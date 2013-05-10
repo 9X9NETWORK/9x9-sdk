@@ -163,6 +163,9 @@ var nn = { };
 				break;
 				
 				default:
+				if (typeof console.log == 'function') {
+					console.log('[' + type + '] ' + message);
+				}
 			}
 		}
 	};
