@@ -8,11 +8,11 @@ nn.init(function() {
 	
 	// log
 	
-	nn.log('I am info');
-	nn.log('I am info', 'info');
-	nn.log('I am warning', 'warning');
-	nn.log('I am error', 'error');
-	nn.log('I am debug', 'debug');
+	nn.log('I am default log');
+	nn.log('I am info log', 'info');
+	nn.log('I am warning log', 'warning');
+	nn.log('I am error log', 'error');
+	nn.log('I am debug log', 'debug');
 	
 	// i18n
 	

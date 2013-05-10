@@ -1,7 +1,7 @@
 /**
  * 9x9 SDK (nn-sdk.js)
  *
- * Please refer to http://dev.teltel.com/louis/9x9-sdk-usage/ for usage
+ * Please refer to http://dev.teltel.com/louis/9x9-sdk/ for usage
  * and more information.
  *
  * ChangeLog:
@@ -31,13 +31,13 @@
  *
  * To download the latest release:
  *
- *   http://dev.teltel.com/louis/9x9-sdk-usage/js/release/latest/nn-sdk.js
+ *   http://dev.teltel.com/louis/9x9-sdk/js/release/latest/nn-sdk.js
  *
  * To download the latest development:
  *
  *   http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js
  *
- * @author	Louis Jeng <louis.jeng@9x9.tv>
+ * @author  Louis Jeng <louis.jeng@9x9.tv>
  */
 
 var nn = { };
@@ -123,7 +123,7 @@ var nn = { };
         }
         
 		if (typeof type == 'undefined') {
-			type = 'info';
+			type = 'debug';
 		} else if (typeof nn.logTypes[type] == 'undefined') {
 			return;
 		}
@@ -142,7 +142,7 @@ var nn = { };
 				if (typeof console.warn == 'function') {
 					console.warn(message);
 				} else if (typeof console.log == 'function') {
-					console.log('[-] ' + message);
+					console.log('[!] ' + message);
 				}
 				break;
 				
@@ -150,7 +150,7 @@ var nn = { };
 				if (typeof console.error == 'function') {
 					console.error(message);
 				} else if (typeof console.log == 'function') {
-					console.log('[!] ' + message);
+					console.log('[x] ' + message);
 				}
 				break;
 				
@@ -158,7 +158,7 @@ var nn = { };
 				if (typeof console.debug == 'function') {
 					console.debug(message);
 				} else if (typeof console.log == 'function') {
-					console.log(message);
+					console.log('[_] ' + message);
 				}
 				break;
 				
@@ -261,24 +261,24 @@ var nn = { };
         var countCommited = 0;
         
         if (!$.isArray(promises)) {
-            nn.log('nn.when(): parameter error', 'error');
+            nn.log('nn.when: parameter error', 'error');
             _dfd.reject();
             return _dfd.promise();
         }
         
-        nn.log('nn.when(): ' + count + ' promises');
+        nn.log('nn.when: ' + count + ' promises');
         var resolved = true;
         
         $.each(promises, function(i, promise) {
             
             promise.done(function() {
                 
-                nn.log('nn.when(): promise ' + i + ' commited');
+                nn.log('nn.when: promise ' + i + ' commited');
                 countCommited++;
                 
             }).fail(function() {
                 
-                nn.log('nn.when(): promise ' + i + ' not commited', 'warning');
+                nn.log('nn.when: promise ' + i + ' not commited', 'warning');
                 resolved = false;
                 
             }).always(function() {
@@ -358,12 +358,13 @@ var nn = { };
 	};
 	
 	nn.langPack = { };
-	
+
 	nn.logTypes = {
-		'info':    true, // turns log on/off separately
+        // enable/disable log separately
+		'info':    true,
 		'warning': true,
 		'error':   true,
-		'debug':   false
+		'debug':   true
 	};
     
     nn.debug = function(turnOn) {
