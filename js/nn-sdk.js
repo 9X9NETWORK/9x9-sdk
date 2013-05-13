@@ -126,7 +126,7 @@ var nn = { };
             return nn.logTypes;
         } else if (typeof message == 'boolean') {
             if (typeof type == 'undefined') {
-                $.each(nn.logTypes, function(i, logType) { nn.logTypes[i] == message; });
+                $.each(nn.logTypes, function(i, logType) { nn.logTypes[i] = message; });
             } else {
                 nn.logTypes[type] = message;
             }
@@ -183,6 +183,12 @@ var nn = { };
 
         return nn.logTypes[type];
     };
+
+    nn.nonCredentialUrls = [
+        'gdata.youtube.com',
+        'graph.facebook.com',
+        'api.catchpo.tw'
+    ];
     
     nn.api = function(method, resourceURI, parameter, callback, dataType) {
         
@@ -193,9 +199,12 @@ var nn = { };
             return;
         }
         
-        var withCredentials = false;
-        if (resourceURI.indexOf('gdata.youtube.com') < 0) {
-            withCredentials = true;
+        var withCredentials = true;
+        for (var i = 0; i < nn.nonCredentialUrls.length; i++) {
+            var url = nn.nonCredentialUrls[i];
+            if (resourceURI.indexOf('://' + url) > 0) {
+                withCredentials = false;
+            }
         }
 
         var localParameter = null;
