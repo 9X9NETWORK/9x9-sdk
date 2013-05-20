@@ -190,32 +190,32 @@
         
     });
     </pre>
-    <h3>進階 API 的使用：pipe()</h3>
-    <p>與 jQuery pipe() 相同用法，後進入 pipe() 者會等先進入者執行結束才開始，並接收前者所回傳的值。<br />
+    <h3>進階 API 的使用：then()</h3>
+    <p>與 jQuery then() 相同用法，後進入 then() 者會等先進入者執行結束才開始，並接收前者所回傳的值。<br />
     程式碼範例是由 YouTube 的 user ID 取得該 user 的播放清單列表。再從列表中取得第一個播放清單。<br />
-    再從播放清單中取得第一個影片的資訊。全部用 pipe() 串在一起。</p>
-    <button id="api-pipe">pipe() 範例</button>
+    再從播放清單中取得第一個影片的資訊。全部用 then() 串在一起。</p>
+    <button id="api-then">then() 範例</button>
     <pre class="prettyprint">
     
-    $('#api-pipe').click(function() {
+    $('#api-then').click(function() {
         
         var param = { 'v': 2, 'alt': 'json' };
 
-        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).pipe(function(data) {
+        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).then(function(data) {
             
             var entry = data.entry;
             var playlistUrl = entry.gd$feedLink.pop().href;
             
             return nn.api('GET', playlistUrl, param);
             
-        }).pipe(function(data) {
+        }).then(function(data) {
             
             var entry = data.feed.entry.shift();
             nn.log(entry);
             
             return entry.media$group.media$title.$t;
             
-        }).pipe(function(title) {
+        }).then(function(title) {
             
             alert(title);
             
@@ -328,7 +328,7 @@
         };
         head.appendChild(script);
         return script;
-    })('//dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js');
+    })('http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js');
     </div>
 </body>
 </html>

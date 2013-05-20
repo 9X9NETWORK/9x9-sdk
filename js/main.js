@@ -106,25 +106,25 @@ nn.init(function() {
         
     });
     
-    $('#api-pipe').click(function() {
+    $('#api-then').click(function() {
         
         var param = { 'v': 2, 'alt': 'json' };
 
-        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).pipe(function(data) {
+        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).then(function(data) {
             
             var entry = data.entry;
             var playlistUrl = entry.gd$feedLink.pop().href;
             
             return nn.api('GET', playlistUrl, param);
             
-        }).pipe(function(data) {
+        }).then(function(data) {
             
             var entry = data.feed.entry.shift();
             nn.log(entry);
             
             return entry.media$group.media$title.$t;
             
-        }).pipe(function(title) {
+        }).then(function(title) {
             
             alert(title);
             
