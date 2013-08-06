@@ -51,13 +51,13 @@ var nn = { };
             if (typeof $ == 'undefined') {
                 return nn.log('nn: jQuery is still missing!', 'error');
             }
-            nn.log('nn: jQuery is detected ' + $().jquery, 'info');
+            nn.log('nn: jQuery is detected ' + $().jquery, 'debug');
             var _dfd = $.Deferred();
             if (typeof callback == 'function') {
                 _dfd.done(callback);
             }
             $(function() {
-                nn.log('nn: initialized', 'info');
+                nn.log('nn: initialized', 'debug');
                 _dfd.resolve();
             });
             return _dfd.promise();
@@ -65,7 +65,7 @@ var nn = { };
         if (typeof $ != 'undefined') {
             return _init();
         }
-        nn.log('nn: jQuery is missing, but we can load it automatically.', 'info');
+        nn.log('nn: jQuery is missing, but we can load it automatically.', 'debug');
         nn.load(nn.jQueryUrl, _init);
     };
 
@@ -91,7 +91,7 @@ var nn = { };
                 }
                 _dfd.resolve();
             };
-            nn.log('nn.load: load CSS from ' + url, 'info');
+            nn.log('nn.load: load CSS from ' + url, 'debug');
             head.appendChild(css);
             return _dfd.promise();
 
@@ -99,7 +99,7 @@ var nn = { };
 
             if (typeof $ != 'undefined') {
                 // using jQuery
-                nn.log('nn.load: load JS by jQuery ' + url, 'info');
+                nn.log('nn.load: load JS by jQuery ' + url, 'debug');
                 return $.getScript(url, callback);
             }
             // without using jQuery
@@ -107,7 +107,7 @@ var nn = { };
             script.type = 'text/javascript';
             script.src = url;
             script.onload = callback;
-            nn.log('nn.load: load JS from ' + url, 'info');
+            nn.log('nn.load: load JS from ' + url, 'debug');
             head.appendChild(script);
         }
     };
@@ -175,6 +175,14 @@ var nn = { };
             }
             break;
 
+            case 'verbose':
+            if (typeof console.debug == 'function') {
+                console.debug(message);
+            } else if (typeof console.log == 'function') {
+                console.log(message);
+            }
+            break;
+
             default:
             if (typeof console.log == 'function') {
                 console.log('[' + type + '] ' + message);
@@ -192,7 +200,7 @@ var nn = { };
     
     nn.api = function(method, resourceURI, parameter, callback, dataType) {
         
-        nn.log('nn.api: ' + method + ' "' + resourceURI + '"', 'info');
+        nn.log('nn.api: ' + method + ' "' + resourceURI + '"', 'debug');
         
         if ($.inArray(method, ['PUT', 'GET', 'POST', 'DELETE', 'HEAD', 'OPTIONS']) == -1) {
             nn.log('nn.api: not supported method', 'warning');
@@ -215,7 +223,7 @@ var nn = { };
             localCallback = parameter;
             if (typeof callback == 'string') {
                 localDataType = callback;
-                nn.log('nn.api: dataType = ' + localDataType, 'info');
+                nn.log('nn.api: dataType = ' + localDataType, 'debug');
             }
         } else if (typeof parameter == 'object' || (typeof parameter == 'string' && 
                                                     $.inArray(parameter, [ 'xml', 'html', 'script', 'json', 'jsonp', 'text' ]) < 0)) {
@@ -225,23 +233,23 @@ var nn = { };
                 localCallback = callback;
                 if (typeof dataType == 'string') {
                     localDataType = dataType;
-                    nn.log('nn.api: dataType = ' + localDataType, 'info');
+                    nn.log('nn.api: dataType = ' + localDataType, 'debug');
                 }
             } else if (typeof callback == 'string') {
                     localDataType = callback;
-                    nn.log('nn.api: dataType = ' + localDataType, 'info');
+                    nn.log('nn.api: dataType = ' + localDataType, 'debug');
             }
         } else if (typeof parameter == 'string') {
             
             localDataType = parameter;
-            nn.log('nn.api: dataType = ' + localDataType, 'info');
+            nn.log('nn.api: dataType = ' + localDataType, 'debug');
         }
 
-        nn.log(localParameter, 'debug');
+        nn.log(localParameter, 'verbose');
         
         // workaround
         if (method == 'DELETE' && localParameter) {
-            nn.log('nn.api: workaround', 'info');
+            nn.log('nn.api: workaround', 'debug');
             var queryString = $.param(localParameter);
             var conjunction = resourceURI.indexOf('?') < 0 ? '?' : '&';
             resourceURI = [ resourceURI, queryString ].join(conjunction);
@@ -259,14 +267,14 @@ var nn = { };
                 'withCredentials': withCredentials
             },
             'success': function(data, textStatus, jqXHR) {
-                nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText, 'info');
-                nn.log('nn.api: textStatus = ' + textStatus, 'debug', 'info');
-                nn.log(data, 'debug');
+                nn.log('nn.api: HTTP ' + jqXHR.status + ' ' + jqXHR.statusText, 'debug');
+                nn.log('nn.api: textStatus = ' + textStatus, 'debug');
+                nn.log(data, 'verbose');
             },
             'error': function(jqXHR, textStatus) {
                 nn.log('nn.api: ' + jqXHR.status + ' ' + jqXHR.statusText, 'warning');
-                nn.log('nn.api: textStatus = ' + textStatus, 'info');
-                nn.log('nn.api: responseText = ' + jqXHR.responseText, 'info');
+                nn.log('nn.api: textStatus = ' + textStatus, 'debug');
+                nn.log('nn.api: responseText = ' + jqXHR.responseText, 'debug');
             }
         });
         if (typeof localCallback == 'function') {
@@ -289,14 +297,14 @@ var nn = { };
             return _dfd.promise();
         }
         
-        nn.log('nn.when: ' + count + ' promises', 'info');
+        nn.log('nn.when: ' + count + ' promises', 'debug');
         var resolved = true;
         
         $.each(promises, function(i, promise) {
             
             promise.done(function() {
                 
-                nn.log('nn.when: promise ' + i + ' commited', 'info');
+                nn.log('nn.when: promise ' + i + ' commited', 'debug');
                 countCommited++;
                 
             }).fail(function() {
@@ -307,7 +315,7 @@ var nn = { };
             }).always(function() {
                 
                 count = count - 1;
-                nn.log(count + ' promises left', 'info');
+                nn.log(count + ' promises left', 'debug');
                 if (count == 0) {
                     console.log('promises commited = ' + countCommited);
                     if (resolved) {
@@ -338,7 +346,7 @@ var nn = { };
                 nn.on(item, hook);
             });
         } else if (typeof nn.apiHooks[type] != 'undefined') {
-            nn.log('nn.on: hook on [' + type + ']', 'info');
+            nn.log('nn.on: hook on [' + type + ']', 'debug');
             nn.apiHooks[type] = hook;
         }
     };
@@ -387,7 +395,8 @@ var nn = { };
         'info':    true,
         'warning': true,
         'error':   true,
-        'debug':   true
+        'debug':   true,
+        'verbose': false
     };
     
     nn.debug = function(turnOn) {
@@ -403,6 +412,22 @@ var nn = { };
         } else if (typeof turnOn == 'string') {
 
             nn.log(turnOn, 'debug');
+        }
+    };
+
+    nn.verbose = function(turnOn) {
+
+        if (typeof turnOn == 'undefined') {
+
+            return nn.logTypes['verbose'];
+
+        } else if (typeof turnOn == 'boolean') {
+
+            nn.logTypes['verbose'] = turnOn;
+
+        } else if (typeof turnOn == 'string') {
+
+            nn.log(turnOn, 'verbose');
         }
     };
 
