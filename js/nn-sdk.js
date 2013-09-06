@@ -45,23 +45,31 @@ var nn = { };
 (function(nn) {
 
     nn.initialize = function(callback) {
+
         // NOTE: 'this' is denote 'nn' object itself, but not always does.
 
         var _init = function() {
+
             if (typeof $ == 'undefined') {
-                return nn.log('nn: jQuery is still missing!', 'error');
+
+                nn.log('nn: jQuery is still missing!', 'error');
+                return _dfd.reject();
             }
             nn.log('nn: jQuery is detected ' + $().jquery, 'debug');
+
             var _dfd = $.Deferred();
+            var promise = _dfd.promise();
             if (typeof callback == 'function') {
-                _dfd.done(callback);
+
+                promise.done(callback);
             }
             $(function() {
                 nn.log('nn: initialized', 'debug');
-                _dfd.resolve();
+                _dfd.resolve($);
             });
-            return _dfd.promise();
+            return promise;
         };
+
         if (typeof $ != 'undefined') {
             return _init();
         }
@@ -70,7 +78,7 @@ var nn = { };
     };
 
     nn.init = nn.initialize;
-    
+
     nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js';
 
     nn.load = function(url, callback) {
@@ -78,7 +86,18 @@ var nn = { };
         var head = document.getElementsByTagName('head')[0];
 
         // load css
-        if (url.substr(-4, 4) == '.css') {
+        if (typeof url == 'undefined') {
+            // TODO: report loaded objects
+        } else if (url == null || url == '') {
+
+            // bypass
+            var _dfd = $.Deferred();
+            if (typeof callback == 'function') {
+                _dfd.done(callback);
+            }
+            return _dfd.resolve();
+
+        } else if (typeof url == 'string' && url.substr(-4, 4) == '.css') {
 
             var _dfd = $.Deferred();
             var css = document.createElement('link');
@@ -91,15 +110,15 @@ var nn = { };
                 }
                 _dfd.resolve();
             };
-            nn.log('nn.load: load CSS from ' + url, 'debug');
+            nn.log('nn.load: load CSS from "' + url + '"', 'debug');
             head.appendChild(css);
             return _dfd.promise();
 
-        } else {
+        } else if (typeof url == 'string') {
 
             if (typeof $ != 'undefined') {
                 // using jQuery
-                nn.log('nn.load: load JS by jQuery ' + url, 'debug');
+                nn.log('nn.load: load JS by jQuery "' + url + '"', 'debug');
                 return $.getScript(url, callback);
             }
             // without using jQuery
@@ -107,8 +126,32 @@ var nn = { };
             script.type = 'text/javascript';
             script.src = url;
             script.onload = callback;
-            nn.log('nn.load: load JS from ' + url, 'debug');
+            nn.log('nn.load: load JS from "' + url + '"', 'debug');
             head.appendChild(script);
+            return script;
+
+        } else if (typeof url == 'object' && $.isArray(url)) {
+
+            nn.log('nn.load: loading resources', 'debug');
+
+            var promises = [ ];
+            $.each(url, function(i, u) {
+                promises.push(nn.load(u));
+            });
+
+            return nn.when(promises).then(function() {
+
+                nn.log('nn.load: all resources are loaded', 'debug');
+
+            }, function() {
+
+                nn.log('nn.load: not all resources are loaded', 'warning');
+            });
+
+        } else {
+
+            // reject
+            return $.Deferred().reject();
         }
     };
 
@@ -134,7 +177,7 @@ var nn = { };
         }
 
         if (typeof type == 'undefined') {
-            type = 'debug';
+            type = 'undefined';
         }
 
         if (nn.logTypes[type] == false) {
@@ -171,6 +214,12 @@ var nn = { };
             if (typeof console.debug == 'function') {
                 console.debug(message);
             } else if (typeof console.log == 'function') {
+                console.log(message);
+            }
+            break;
+
+            case 'undefined':
+            if (typeof console.log == 'function') {
                 console.log(message);
             }
             break;
@@ -317,7 +366,7 @@ var nn = { };
                 count = count - 1;
                 nn.log(count + ' promises left', 'debug');
                 if (count == 0) {
-                    console.log('promises commited = ' + countCommited);
+                    nn.log('promises commited = ' + countCommited, 'debug');
                     if (resolved) {
                         _dfd.resolve(countCommited);
                     } else {
