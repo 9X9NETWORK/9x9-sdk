@@ -79,7 +79,7 @@ var nn = { };
 
     nn.init = nn.initialize;
 
-    nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js';
+    nn.jQueryUrl = '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
 
     nn.load = function(url, callback) {
 
@@ -351,6 +351,11 @@ var nn = { };
         
         $.each(promises, function(i, promise) {
             
+            if (promise == null) {
+                nn.log('nn.when: by-passing `null`', 'debug');
+                promise = $.Deferred().resolve();
+            }
+
             promise.done(function() {
                 
                 nn.log('nn.when: promise ' + i + ' commited', 'debug');
@@ -366,7 +371,7 @@ var nn = { };
                 count = count - 1;
                 nn.log(count + ' promises left', 'debug');
                 if (count == 0) {
-                    nn.log('promises commited = ' + countCommited, 'debug');
+                    nn.log('total promises commited = ' + countCommited, 'debug');
                     if (resolved) {
                         _dfd.resolve(countCommited);
                     } else {
