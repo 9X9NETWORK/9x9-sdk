@@ -259,7 +259,7 @@ var nn = { };
         var withCredentials = true;
         for (var i = 0; i < nn.nonCredentialUrls.length; i++) {
             var url = nn.nonCredentialUrls[i];
-            if (resourceURI.indexOf('://' + url) > 0) {
+            if (resourceURI.indexOf(url) > 0) {
                 withCredentials = false;
             }
         }
@@ -463,7 +463,7 @@ var nn = { };
 
             nn.logTypes['debug'] = turnOn;
 
-        } else if (typeof turnOn == 'string') {
+        } else {
 
             nn.log(turnOn, 'debug');
         }
@@ -479,7 +479,7 @@ var nn = { };
 
             nn.logTypes['verbose'] = turnOn;
 
-        } else if (typeof turnOn == 'string') {
+        } else {
 
             nn.log(turnOn, 'verbose');
         }
@@ -495,7 +495,7 @@ var nn = { };
 
             nn.logTypes['info'] = turnOn;
 
-        } else if (typeof turnOn == 'string') {
+        } else {
 
             nn.log(turnOn, 'info');
         }
@@ -511,7 +511,7 @@ var nn = { };
 
             nn.logTypes['warning'] = turnOn;
 
-        } else if (typeof turnOn == 'string') {
+        } else {
 
             nn.log(turnOn, 'warning');
         }
@@ -527,7 +527,7 @@ var nn = { };
 
             nn.logTypes['error'] = turnOn;
 
-        } else if (typeof turnOn == 'string') {
+        } else {
 
             nn.log(turnOn, 'error');
         }
@@ -542,4 +542,11 @@ var nn = { };
     };
     
 })(nn);
+
+if (typeof define != 'undefined') {
+    define([ ], function() {
+        nn.log('AMD', 'debug');
+        return nn;
+    });
+}
 
