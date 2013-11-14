@@ -1,0 +1,14 @@
+{
+  "name": "9x9-sdk",
+  "version": "0.0.6",
+  "main": "js/release/v0.0.6/nn-sdk.js",
+  "ignore": [
+    "node-sandbox",
+    "node_modules"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.1"
+  },
+  "devDependencies": {
+  }
+}
