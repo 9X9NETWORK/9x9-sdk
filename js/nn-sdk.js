@@ -522,13 +522,14 @@ var nn = { };
         }
         return name.substr(name.indexOf('.'));
     };
-    
-    if (typeof define != 'undefined') {
-        define([ ], function() {
-            nn.log('AMD', 'debug');
-            return nn;
-        });
-    }
 
 })(nn);
+
+if (typeof define != 'undefined') {
+
+    define([ nn.jQueryUrl ], function($) {
+        nn.log('AMD', 'debug');
+        return nn;
+    });
+}
 

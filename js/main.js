@@ -4,6 +4,8 @@
 
 nn.init(function() {
 	
+    nn.load("css/style.css");
+    nn.load("css/prettify.css");
 	prettyPrint();
 	
 	// log
@@ -16,7 +18,7 @@ nn.init(function() {
     nn.log('I am error log', 'error');
     nn.log('I am debug log', 'debug');     // default
     nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
-    nn.log('I am customized log', 'what-ever-you-want');
+    nn.log('I am customized log', 'whatever-you-want');
 
     // short cut
     nn.debug();      // get the debug log status
