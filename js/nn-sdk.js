@@ -1,43 +1,25 @@
 /**
  * 9x9 SDK (nn-sdk.js)
  *
+ * 9x9 SDK is part of 9x9 development infrastructure.
+ * As a tool kit, 9x9 SDK provides common front-end ultilization tools.
+ *
  * Please refer to http://dev.teltel.com/louis/9x9-sdk/ for usage
  * and more information.
  *
  * ChangeLog:
  *
- *   + 2012-08-23 v0.0.1 by Louis
- *     - first version
- *     - api(), log(), i18n()
+ *   http://dev.teltel.com/louis/9x9-sdk/ChangeLog.txt
  *
- *   + 2012-09-27 v0.0.2 by Louis
- *     - nn.on() multiple hook
- *     - nn.api() supports YouTube API
- *
- *   + 2012-10-01 v0.0.3 by Louis
- *     - nn.when()
- *     - disable ajax cache
- *
- *   + 2012-11-28 v0.0.4 by Louis
- *     - support multi-level language pack
- *
- *   + 2013-01-30 v0.0.5 by Louis
- *     - CORS cross domain support
- *
- *   + 2013-05-09 v0.0.6 by Louis
- *     - nn.api(): 'DELETE' workarround
- *     - CSS/JS loader (also load jQuery automatically when missing)
- *     - jQuery 1.9.1
- *
- * To download the latest release:
+ * The latest release:
  *
  *   http://dev.teltel.com/louis/9x9-sdk/js/release/latest/nn-sdk.js
  *
- * To download the latest development:
+ * The latest development:
  *
  *   http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js
  *
- * @author  Louis Jeng <louis.jeng@9x9.tv>
+ * @author Louis Jeng <louis.jeng@9x9.tv>
  */
 
 var nn = { };
@@ -541,12 +523,12 @@ var nn = { };
         return name.substr(name.indexOf('.'));
     };
     
-})(nn);
+    if (typeof define != 'undefined') {
+        define([ ], function() {
+            nn.log('AMD', 'debug');
+            return nn;
+        });
+    }
 
-if (typeof define != 'undefined') {
-    define([ ], function() {
-        nn.log('AMD', 'debug');
-        return nn;
-    });
-}
+})(nn);
 
