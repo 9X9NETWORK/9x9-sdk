@@ -8,11 +8,21 @@ nn.init(function() {
 	
 	// log
 	
-	nn.log('I am default log');
-	nn.log('I am info log', 'info');
-	nn.log('I am warning log', 'warning');
-	nn.log('I am error log', 'error');
-	nn.log('I am debug log', 'debug');
+    nn.log('I am default log'); // recommended
+
+    // other log levels
+    nn.log('I am info log', 'info');
+    nn.log('I am warning log', 'warning');
+    nn.log('I am error log', 'error');
+    nn.log('I am debug log', 'debug');     // default
+    nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
+    nn.log('I am customized log', 'what-ever-you-want');
+
+    // short cut
+    nn.debug();      // get the debug log status
+    nn.debug(false); // turn off debug log
+    nn.debug(true);  // turn on debug log
+    nn.debug('I am debug log message'); // log 'debug' message (so does tohers)
 	
 	// i18n
 	

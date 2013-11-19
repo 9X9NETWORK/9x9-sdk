@@ -40,7 +40,7 @@
     <p>9x9 SDK 是用 Javascript 寫成，只要在網頁適當地方引入即可。請下載目前<a href="js/release/latest/nn-sdk.js">最新版本</a>。</p>
     <h2>相依元件</h2>
     <ul>
-        <li>jQuery-1.9.x (自動載入)</li>
+        <li>jQuery &gt;= 1.9.1 (自動載入)</li>
     </ul>
     <h2>初始化</h2>
     <p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也。</p>
@@ -55,11 +55,21 @@
     <h2>LOG</h2>
     <pre class="prettyprint">
     
-    nn.log('I am default log');
+    nn.log('I am default log'); // recommended
+
+    // other log levels
     nn.log('I am info log', 'info');
     nn.log('I am warning log', 'warning');
-    nn.log('I am error lof', 'error');
-    nn.log('I am debug log', 'debug');
+    nn.log('I am error log', 'error');
+    nn.log('I am debug log', 'debug');     // default
+    nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
+    nn.log('I am customized log', 'what-ever-you-want');
+
+    // short cut
+    nn.debug();      // get the debug log status
+    nn.debug(false); // turn off debug log
+    nn.debug(true);  // turn on debug log
+    nn.debug('I am debug log message'); // log 'debug' message (so does tohers)
     </pre>
     <h2>i18n</h2>
     <button id="i18n-btn-1">World</button>
