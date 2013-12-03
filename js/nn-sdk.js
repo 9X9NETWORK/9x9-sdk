@@ -66,7 +66,7 @@ var nn = { };
     nn.load = function(url, callback) {
 
         var head = document.getElementsByTagName('head')[0];
-        var _dfd = $.Deferred();
+        var _dfd = null;
 
         // load css
         if (typeof url == 'undefined') {
@@ -74,6 +74,7 @@ var nn = { };
         } else if (url === null || url === '') {
 
             // bypass
+            _dfd = $.Deferred();
             if (typeof callback == 'function') {
                 _dfd.done(callback);
             }
@@ -81,6 +82,7 @@ var nn = { };
 
         } else if (typeof url == 'string' && url.substr(-4, 4) == '.css') {
 
+            _dfd = $.Deferred();
             var css = document.createElement('link');
             css.type = "text/css";
             css.rel = "stylesheet";
