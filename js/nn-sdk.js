@@ -4,20 +4,20 @@
  * 9x9 SDK is part of 9x9 development infrastructure.
  * As a tool kit, 9x9 SDK provides common front-end ultilization tools.
  *
- * Please refer to http://dev.teltel.com/louis/9x9-sdk/ for usage
+ * Please refer to http://dev.teltel.com/9x9-sdk/ for usage
  * and more information.
  *
  * ChangeLog:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/ChangeLog.txt
+ *   http://dev.teltel.com/9x9-sdk/ChangeLog.txt
  *
  * The latest release:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/js/release/latest/nn-sdk.js
+ *   http://dev.teltel.com/9x9-sdk/js/release/latest/nn-sdk.js
  *
  * The latest development:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js
+ *   http://dev.teltel.com/9x9-sdk/js/nn-sdk.js
  *
  * @author Louis Jeng <louis.jeng@9x9.tv>
  */

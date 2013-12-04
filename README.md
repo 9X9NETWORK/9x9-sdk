@@ -1,1 +1,1 @@
-## Please see <http://dev.teltel.com/louis/9x9-sdk/> ##
+## Please see <http://dev.teltel.com/9x9-sdk/> ##

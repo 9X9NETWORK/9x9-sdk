@@ -147,9 +147,10 @@ nn.init(function() {
     $('#api-when').click(function() {
         
         var videoIds = [
-            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY',
+            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'GCnCcg589xg',
             'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
-            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM'
+            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM', 'Q5JDf1ax5sw',
+            'L07dKlGums0', 'L07dKlGums0', 'G9uMxVub7EE', 'bps3COJpST8'
         ];
         
         var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';
