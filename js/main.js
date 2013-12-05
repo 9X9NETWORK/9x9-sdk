@@ -77,12 +77,41 @@ nn.init(function() {
 		var password = $('#api-login-password').val();
 		var parameter = { 'email': email, 'password': password };
 		
-		nn.api('POST', 'api-login.php', parameter, function(user) {
-			if (!user)
+		var promise = nn.api('POST', 'http://www.9x9.tv/api/login', parameter).then(function(user) {
+
+            var _dfd = $.Deferred();
+			if (!user) {
 				alert('登入失敗');
-			else
+                _dfd.reject();
+			} else {
 				alert('登入成功');
-		});
+                _dfd.resolve(user);
+            }
+            return _dfd.promise();
+
+		}).then(function(user) {
+
+            nn.log(user);
+            return nn.api('GET', 'http://www.9x9.tv/api/channels', { 'userId': user.id });
+
+        }).then(function(channels) {
+
+            //nn.log(channels);
+            $.each(channels, function(i, channel) {
+
+                nn.api('GET', 'http://www.9x9.tv/api/episodes', { 'channelId': channel.id }).then(function(episodes) {
+
+                    //nn.log(episodes);
+                    $.each(episodes, function(i, episode) {
+
+                        nn.api('GET', 'http://www.9x9.tv/api/episodes/' + episode.id + '/programs').then(function(programs) {
+                            nn.log(programs);
+                        });
+                    });
+                });
+            });
+
+        });
 	});
 	
 	nn.on(400, function(jqXHR, textStatus) {
