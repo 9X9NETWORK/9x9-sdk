@@ -1,343 +1,355 @@
 <!DOCTYPE HTML>
 <html lang="zh-tw">
 <head>
-    <title>9x9 SDK 使用方法說明</title>
-    <meta charset="UTF-8">
-    <script src="js/prettify.js"></script>
-    <script src="js/nn-sdk.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-27493799-2', 'teltel.com');
-      ga('send', 'pageview');
-
-    </script>
+<title>9x9 SDK 使用方法說明</title>
+<meta charset="UTF-8">
+<script src="js/prettify.js"></script>
+<script src="js/nn-sdk.js"></script>
+<script src="js/main.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-27493799-2', 'teltel.com');
+  ga('send', 'pageview');
+</script>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-RLPW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-RLPW');</script>
+<!-- End Google Tag Manager -->
 </head>
 <body>
+<h1>9x9 SDK 使用方法說明</h1>
 
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-RLPW"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-RLPW');</script>
-    <!-- End Google Tag Manager -->
+<p><strong>9x9 SDK</strong> 為各個不同的前端專案共通的部分，提供一個統合的界面，力求減低被分別開發的各別前端應用間的差異。</p>
 
-    <h1 class="align-center">9x9 SDK 使用方法說明</h1>
-    <div class="align-center">
-        <p><b>9x9 SDK</b> 為各個不同的前端專案共通的部分，提供一個統合的界面，力求減低被分別開發的各別前端應用間的差異。</p>
-        <div class="align-right"><a href="mailto:louis.jeng@9x9.tv"><img src="http://goo.gl/2gC5w" alt="Louis Jeng"/></a><br /><i>2012.08.21</i></div>
-    </div>
-    <hr />
-    <p>9x9 SDK 是用 Javascript 寫成，只要在網頁適當地方引入即可。請下載目前最新版本： <a href="js/nn-sdk.js">nn-sdk.js</a></p>
-    <h2>相依元件</h2>
-    <ul>
-        <li>jQuery &gt;= 1.9.1 (自動載入)</li>
-    </ul>
-    <h2>初始化</h2>
-    <p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也。</p>
-    <pre class="prettyprint">
+<p><a href="mailto:louis.jeng@9x9.tv"><img src="http://goo.gl/2gC5w" alt="Louis Jeng" /></a> <em>2012.08.21</em></p>
 
-    nn.init(function() {
-        // put your code here
-        nn.log('Hello, world!');
+<hr />
+
+<p>9x9 SDK 是用 Javascript 寫成，只要在網頁適當地方引入即可。請下載目前最新版本： <a href="js/nn-sdk.js">nn-sdk.js</a></p>
+
+<h2>相依元件</h2>
+
+<ul>
+<li>jQuery &gt;= 1.9.1 (自動載入)</li>
+</ul>
+
+
+<h2>初始化</h2>
+
+<p>凡必先初始化始得以呼叫 9x9 SDK 之其它功能也。</p>
+
+<pre><code>nn.init(function() {
+    // put your code here
+    nn.log('Hello, world!');
+});
+</code></pre>
+
+<p>如果說找不到 jQuery，它會自行載入。</p>
+
+<h2>LOG</h2>
+
+<pre><code>nn.log('I am default log'); // recommended
+
+// other log levels
+nn.log('I am info log', 'info');
+nn.log('I am warning log', 'warning');
+nn.log('I am error log', 'error');
+nn.log('I am debug log', 'debug');     // default
+nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
+nn.log('I am customized log', 'whatever-you-want');
+
+// short cut
+nn.debug();      // get the debug log status
+nn.debug(false); // turn off debug log
+nn.debug(true);  // turn on debug log
+nn.debug('I am debug log message'); // log 'debug' message (so does tohers)
+</code></pre>
+
+<h2>i18</h2>
+
+<p><button id="i18n-btn-1">World</button>
+<button id="i18n-btn-2">Helo {0}, there are {1} people online</button>
+<button id="i18n-btn-3">Bye bye!</button></p>
+
+<pre><code>var langPack = { // this pack can be loaded from api
+
+    'Helo {0}, there are {1} people online': '您好 {0}, 現在有 {1} 個人在線上',
+    'World': '世界'
+};
+
+nn.i18n(langPack); // initialize i18n
+
+$('#i18n-btn-1').click(function() {
+
+    alert(nn._('World'));
+});
+$('#i18n-btn-2').click(function() {
+
+    alert(nn._('Helo {0}, there are {1} people online', ['louis', 2]));
+});
+$('#i18n-btn-3').click(function() {
+
+    alert(nn._('Bye bye!'));
+});
+</code></pre>
+
+<h3>多階層式的語言包結構及其呼叫方式</h3>
+
+<p><button id="i18n-btn-4">hello!my name is Louis</button></p>
+
+<pre><code>langpack = {
+    "who": {
+        "my name is {0}": "我叫{0}"
+    },
+    "misc": {
+        "symbol": {
+            "?": "？",
+            ".": "。",
+            ",": "，"
+        }
+    },
+    "hello!": "你好！"
+};
+nn.i18n(langpack);
+$('#i18n-btn-4').click(function() {
+
+    var greeting = nn._("hello!")
+                 + nn._(["who", "my name is {0}"], "louis")
+                 + nn._(["misc", "symbol", "."]);
+    alert(nn._(greeting));
+});
+</code></pre>
+
+<h2>API</h2>
+
+<p><label>拿登入 API 來作例子。( louis@tt.com / 111111 )</label><br />
+<label>輸入正確的帳密登入成功，輸入錯誤的帳密登入失敗。</label><br />
+<label>帳號：</label><input type="email" id="api-login-email"/>&nbsp;
+<label>密碼：</label><input type="password" id="api-login-password"/>
+<button id="api-login-submit">登入</button></p>
+
+<pre><code>$('#api-login-submit').click(function() {
+
+    var email = $('#api-login-email').val();
+    var password = $('#api-login-password').val();
+    var parameter = { 'email': email, 'password': password };
+
+    nn.api('POST', 'api-login.php', parameter, function(user) {
+        if (!user)
+            alert('登入失敗');
+        else
+            alert('登入成功');
     });
-    </pre>
-    <p>如果說找不到 jQuery，它會自行載入。</p>
-    <h2>LOG</h2>
-    <pre class="prettyprint">
-    
-    nn.log('I am default log'); // recommended
+});
+</code></pre>
 
-    // other log levels
-    nn.log('I am info log', 'info');
-    nn.log('I am warning log', 'warning');
-    nn.log('I am error log', 'error');
-    nn.log('I am debug log', 'debug');     // default
-    nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
-    nn.log('I am customized log', 'whatever-you-want');
+<h3>API 呼叫的參數組合</h3>
 
-    // short cut
-    nn.debug();      // get the debug log status
-    nn.debug(false); // turn off debug log
-    nn.debug(true);  // turn on debug log
-    nn.debug('I am debug log message'); // log 'debug' message (so does tohers)
-    </pre>
-    <h2>i18n</h2>
-    <button id="i18n-btn-1">World</button>
-    <button id="i18n-btn-2">Helo {0}, there are {1} people online</button>
-    <button id="i18n-btn-3">Bye bye!</button>
-    <pre class="prettyprint">
-    
-    var langPack = { // this pack can be loaded from api
-        
-        'Helo {0}, there are {1} people online': '您好 {0}, 現在有 {1} 個人在線上',
-        'World': '世界'
+<pre><code>nn.api(method, resourceURI [, parameter] [, callback] [, dataType]); // dataType 請參考 jQuery.ajax() dataType
+</code></pre>
+
+<h3>API 的錯誤處理</h3>
+
+<p>要處理 API 的錯誤情形，先必需透過 <em>nn.on()</em> 來掛載所要被執行的 callback 函式。<br/>
+目前支援的掛載的錯誤碼有 200, 201, 400, 401, 403, 404, 500。<br/>
+如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br/>
+callback 函式以 <em>null</em> 代替可以取消掛載。</p>
+
+<p><button id="api-fail-call">按我測試</button>&nbsp;<label>以錯誤的方式呼叫API－不帶任何參數</label></p>
+
+<pre><code>nn.on(400, function(jqXHR, textStatus) {
+
+    alert(textStatus + ": " + jqXHR.responseText);
+});
+
+$('#api-fail-call').click(function() {
+
+    nn.api('POST', 'api-login.php', null /* 少了應有的參數 */, function(user) {
+
+        // 這裡不會被執行
+    });
+});
+</code></pre>
+
+<p>或者一次掛載多個錯誤處理。</p>
+
+<pre><code>nn.on([ 400, 401, 403, 404 ], function(jqXHR, textStatus) {
+
+    alert(textStatus + ": " + jqXHR.responseText);
+});
+</code></pre>
+
+<p><small><strong>註：由於 jQuery 在 ajax 錯誤處理的部分並不會對回傳的信息作 JSON 的解析。<br/>
+所以，API server 在 4XX 或 5XX 的情形下會選擇以 plain text 的方式回應，而不是 JSON 的格式。</strong></small></p>
+
+<h3>進階 API 的使用：呼叫 YouTube API</h3>
+
+<p>你可以用 nn.api() 來呼叫 YouTube API。</p>
+
+<p><button id="api-youtube">呼叫 YouTube API</button></p>
+
+<pre><code>$('#api-youtube').click(function() {
+
+    var param = {
+        'v':   2,
+        'alt': 'json'
     };
-    
-    nn.i18n(langPack); // initialize i18n
-    
-    $('#i18n-btn-1').click(function() {
-        
-        alert(nn._('World'));
-    });
-    $('#i18n-btn-2').click(function() {
-        
-        alert(nn._('Helo {0}, there are {1} people online', ['louis', 2]));
-    });
-    $('#i18n-btn-3').click(function() {
-        
-        alert(nn._('Bye bye!'));
-    });
-    </pre>
-    <h3>多階層式的語言包結構及其呼叫方式</h3>
-    <button id="i18n-btn-4">hello!my name is Louis</button>
-    <pre class="prettyprint">
 
-    langpack = {
-        "who": {
-            "my name is {0}": "我叫{0}"
-        },
-        "misc": {
-            "symbol": {
-                "?": "？",
-                ".": "。",
-                ",": "，"
-            }
-        },
-        "hello!": "你好！"
-    };
-    nn.i18n(langpack);
-    $('#i18n-btn-4').click(function() {
+    nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param, function(data) {
 
-        var greeting = nn._("hello!")
-                     + nn._(["who", "my name is {0}"], "louis")
-                     + nn._(["misc", "symbol", "."]);
-        alert(nn._(greeting));
-    });
-    </pre>
-    <h2>API</h2>
-    <label>拿登入 API 來作例子。( louis@tt.com / 111111 )</label><br />
-    <label>輸入正確的帳密登入成功，輸入錯誤的帳密登入失敗。</label><br />
-    <label>帳號：</label><input type="email" id="api-login-email"/>&nbsp;
-    <label>密碼：</label><input type="password" id="api-login-password"/>
-    <button id="api-login-submit">登入</button>
-    <pre class="prettyprint">
-    
-    $('#api-login-submit').click(function() {
-        
-        var email = $('#api-login-email').val();
-        var password = $('#api-login-password').val();
-        var parameter = { 'email': email, 'password': password };
-        
-        nn.api('POST', 'api-login.php', parameter, function(user) {
-            if (!user)
-                alert('登入失敗');
-            else
-                alert('登入成功');
-        });
-    });
-    </pre>
-    <h3>API 呼叫的參數組合</h3>
-    <pre class="prettyprint">
-    
-    nn.api(method, resourceURI [, parameter] [, callback] [, dataType]); // dataType 請參考 jQuery.ajax() dataType
-    </pre>
-    <h3>API 的錯誤處理</h3>
-    <p>
-        要處理 API 的錯誤情形，先必需透過 <i>nn.on()</i> 來掛載所要被執行的 callback 函式。<br />
-        目前支援的掛載的錯誤碼有 200, 201, 400, 401, 403, 404, 500。<br />
-        如果同時掛載同樣錯誤碼兩次以上，後者會覆寫掉前者。<br />
-        callback 函式以 <i>null</i> 代替可以取消掛載。
-    </p>
-    <button id="api-fail-call">按我測試</button>&nbsp;<label>以錯誤的方式呼叫API－不帶任何參數</label>
-    <pre class="prettyprint">
-    
-    nn.on(400, function(jqXHR, textStatus) {
-        
-        alert(textStatus + ": " + jqXHR.responseText);
-    });
-    
-    $('#api-fail-call').click(function() {
-        
-        nn.api('POST', 'api-login.php', null /* 少了應有的參數 */, function(user) {
-            
-            // 這裡不會被執行
-        });
-    });
-    </pre>
-    <p>
-        或者一次掛載多個錯誤處理。
-    </p>
-    <pre class="prettyprint">
-    
-    nn.on([ 400, 401, 403, 404 ], function(jqXHR, textStatus) {
-        
-        alert(textStatus + ": " + jqXHR.responseText);
-    });
-    </pre>
-    <p>
-        <small><b>註：由於 jQuery 在 ajax 錯誤處理的部分並不會對回傳的信息作 JSON 的解析。<br />
-        所以，API server 在 4XX 或 5XX 的情形下會選擇以 plain text 的方式回應，而不是 JSON 的格式。</b></small>
-    </p>
-    <h3>進階 API 的使用：呼叫 YouTube API</h3>
-    <p>你可以用 nn.api() 來呼叫 YouTube API。</p>
-    <button id="api-youtube">呼叫 YouTube API</button>
-    <pre class="prettyprint">
-    
-    $('#api-youtube').click(function() {
-        
-        var param = {
-            'v':   2,
-            'alt': 'json'
-        };
-        
-        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param, function(data) {
-            
-            var entry = data.entry;
-            
-            nn.log(entry); // 請觀察 log
-            
-            alert(entry.title.$t);
-        });
-        
-    });
-    </pre>
-    <h3>進階 API 的使用：then()</h3>
-    <p>與 jQuery then() 相同用法，後進入 then() 者會等先進入者執行結束才開始，並接收前者所回傳的值。<br />
-    程式碼範例是由 YouTube 的 user ID 取得該 user 的播放清單列表。再從列表中取得第一個播放清單。<br />
-    再從播放清單中取得第一個影片的資訊。全部用 then() 串在一起。</p>
-    <button id="api-then">then() 範例</button>
-    <pre class="prettyprint">
-    
-    $('#api-then').click(function() {
-        
-        var param = { 'v': 2, 'alt': 'json' };
+        var entry = data.entry;
 
-        nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).then(function(data) {
-            
-            var entry = data.entry;
-            var playlistUrl = entry.gd$feedLink.pop().href;
-            
-            return nn.api('GET', playlistUrl, param);
-            
-        }).then(function(data) {
-            
-            var entry = data.feed.entry.shift();
-            nn.log(entry);
-            
-            return entry.media$group.media$title.$t;
-            
-        }).then(function(title) {
-            
-            alert(title);
-            
-        });
+        nn.log(entry); // 請觀察 log
+
+        alert(entry.title.$t);
+    });
+
+});
+</code></pre>
+
+<h3>進階 API 的使用：then()</h3>
+
+<p>與 jQuery then() 相同用法，後進入 then() 者會等先進入者執行結束才開始，並接收前者所回傳的值。<br/>
+程式碼範例是由 YouTube 的 user ID 取得該 user 的播放清單列表。再從列表中取得第一個播放清單。<br/>
+再從播放清單中取得第一個影片的資訊。全部用 then() 串在一起。</p>
+
+<p><button id="api-then">then() 範例</button></p>
+
+<pre><code>$('#api-then').click(function() {
+
+    var param = { 'v': 2, 'alt': 'json' };
+
+    nn.api('GET', 'http://gdata.youtube.com/feeds/api/users/louisje', param).then(function(data) {
+
+        var entry = data.entry;
+        var playlistUrl = entry.gd$feedLink.pop().href;
+
+        return nn.api('GET', playlistUrl, param);
+
+    }).then(function(data) {
+
+        var entry = data.feed.entry.shift();
+        nn.log(entry);
+
+        return entry.media$group.media$title.$t;
+
+    }).then(function(title) {
+
+        alert(title);
 
     });
-    </pre>
-    <h3>進階 API 的使用：nn.when()</h3>
-    <p><span style="color:grey">v0.0.3</span><br />
-    nn.when() 是 $.when() 的改良版。原本 $.when() 只支援固定個數的 promise 傳入。
-    nn.when() 在實現上更加彈性，將 promise 以陣列的方式傳入，可以支援不固定個數的 promise。
-    nn.when() 會回傳一個新的 promise。新的 promise 在所傳入的所有 promise 皆被兌現後，
-    才會被兌現(<i> done() </i>)。如果傳入的 promise 中任一個無法被兌現，回傳的 promise 會觸發失敗(<i> fail() </i>)。
-    範例是以 Youtube API 呼叫為例，當所有的 API 都呼叫成功 done() 才會被觸發，否則 fail() 就會被觸發。
-    更詳細的用法請參考<a href="http://api.jquery.com/jQuery.when/">$.when()</a>。
-    </p>
-    <button id="api-when">nn.when() 範例</button>
-    <pre class="prettyprint">
-    
-    $('#api-when').click(function() {
-        
-        var videoIds = [
-            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'GCnCcg589xg',
-            'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
-            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM', 'Q5JDf1ax5sw',
-            'L07dKlGums0', 'L07dKlGums0', 'G9uMxVub7EE', 'bps3COJpST8'
-        ];
-        
-        var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';
-        
-        var promises = [ ];
-        
-        $.each(videoIds, function(i, videoId) {
-            var promise = nn.api('GET', apiBaseUrl + videoId, 'v=2&amp;alt=json', 'json');
-            promises.push(promise);
-        });
-        
-        var whenPromise = nn.when(promises);
-        
-        whenPromise.done(function() {
-            alert('done!');
-        }).fail(function() {
-            alert('fail!');
-        });
-    });
-    </pre>
-    <h2>Loader</h2>
-    <p><span style="color:grey">v0.0.6</span><br />
-    載入 CSS/JS 並套用至當前頁面。</p>
-    <button id="load-btn">載入 jQuery UI</button>&nbsp;<label>一但載入成功，按鈕會被置換成 jquery-ui 'smoothness' 的 theme</label>
-    <pre class="prettyprint">
-    
-    $('#load-btn').click(function() {
-        
-        var cssUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.css';
-        var jsUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js';
-        
-        nn.load(jsUrl, function() {
-            nn.load(cssUrl, function() {
-                $('#load-btn').button();
-            });
-        });
-    });
-    </pre>
-    <h2>附錄</h2>
-    <h3>api-login.php</h3>
-    <pre class="prettyprint">
 
-&lt;?php
-    
-    if (!isset($_REQUEST["email"]) || !isset($_REQUEST["password"])) {
-        
-        header("HTTP/1.1 400 Missing Parameter");
-        header("Content-Type: application/json");
-        
-        echo "missing email or password";
-        
-        exit;
-    }
-    
-    header("HTTP/1.1 200 OK");
+});
+</code></pre>
+
+<h3>進階 API 的使用：nn.when()</h3>
+
+<p><span style="color:grey">v0.0.3</span><br/>
+nn.when() 是 $.when() 的改良版。原本 $.when() 只支援固定個數的 promise 傳入。
+nn.when() 在實現上更加彈性，將 promise 以陣列的方式傳入，可以支援不固定個數的 promise。
+nn.when() 會回傳一個新的 promise。新的 promise 在所傳入的所有 promise 皆被兌現後，
+才會被兌現(<em> done() </em>)。如果傳入的 promise 中任一個無法被兌現，回傳的 promise 會觸發失敗(<em> fail() </em>)。
+範例是以 Youtube API 呼叫為例，當所有的 API 都呼叫成功 done() 才會被觸發，否則 fail() 就會被觸發。
+更詳細的用法請參考<a href="http://api.jquery.com/jQuery.when/">$.when()</a>。</p>
+
+<p><button id="api-when">nn.when() 範例</button></p>
+
+<pre><code>$('#api-when').click(function() {
+
+    var videoIds = [
+        'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'GCnCcg589xg',
+        'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
+        'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM', 'Q5JDf1ax5sw',
+        'L07dKlGums0', 'L07dKlGums0', 'G9uMxVub7EE', 'bps3COJpST8'
+    ];
+
+    var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';
+
+    var promises = [ ];
+
+    $.each(videoIds, function(i, videoId) {
+        var promise = nn.api('GET', apiBaseUrl + videoId, 'v=2&amp;amp;alt=json', 'json');
+        promises.push(promise);
+    });
+
+    var whenPromise = nn.when(promises);
+
+    whenPromise.done(function() {
+        alert('done!');
+    }).fail(function() {
+        alert('fail!');
+    });
+});
+</code></pre>
+
+<h2>Loader</h2>
+
+<p><span style="color:grey">v0.0.6</span><br/>
+載入 CSS/JS 並套用至當前頁面。</p>
+
+<p><button id="load-btn">載入 jQuery UI</button>&nbsp;<label>一但載入成功，按鈕會被置換成 jquery-ui &lsquo;smoothness&rsquo; 的 theme</label></p>
+
+<pre><code>$('#load-btn').click(function() {
+
+    var cssUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.css';
+    var jsUrl = '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js';
+
+    nn.load(jsUrl, function() {
+        nn.load(cssUrl, function() {
+            $('#load-btn').button();
+        });
+    });
+});
+</code></pre>
+
+<h2>附錄</h2>
+
+<h3>api-login.php</h3>
+
+<pre><code>&lt;?php
+
+if (!isset($_REQUEST["email"]) || !isset($_REQUEST["password"])) {
+
+    header("HTTP/1.1 400 Missing Parameter");
     header("Content-Type: application/json");
-    
-    if ($_REQUEST["email"] == "louis@tt.com" &amp;&amp;
-        $_REQUEST["password"] == "111111") {
-        
-        $response = array (
-            "name"   =&gt; "Louis",
-            "email"  =&gt; "louis@tt.com",
-            "type"   =&gt; 1,
-            "gender" =&gt; 1
-        );
-        
-        echo json_encode($response);
-        
-    } else {
-        
-        echo json_encode(null);
-        
-    }
-    </pre>
-    <br />
-    <div style="color:white">
+
+    echo "missing email or password";
+
+    exit;
+}
+
+header("HTTP/1.1 200 OK");
+header("Content-Type: application/json");
+
+if ($_REQUEST["email"] == "louis@tt.com" &amp;amp;&amp;amp;
+    $_REQUEST["password"] == "111111") {
+
+    $response = array (
+        "name"   =&gt; "Louis",
+        "email"  =&gt; "louis@tt.com",
+        "type"   =&gt; 1,
+        "gender" =&gt; 1
+    );
+
+    echo json_encode($response);
+
+} else {
+
+    echo json_encode(null);
+
+}
+</code></pre>
+
+<div style="color:white">
+
     (function(url) {
         var head = document.getElementsByTagName('head')[0];
         var script = document.createElement('script');
@@ -349,6 +361,10 @@
         head.appendChild(script);
         return script;
     })('http://dev.teltel.com/9x9-sdk/js/nn-sdk.js');
-    </div>
+
+</div>
+
+
+
 </body>
 </html>
