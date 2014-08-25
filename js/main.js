@@ -6,6 +6,7 @@ nn.init(function() {
 	
     nn.load("css/style.css");
     nn.load("css/prettify.css");
+    nn.load("http://kevinburke.bitbucket.org/markdowncss/markdown.css");
     nn.load("http://rawgithub.com/namuol/cheet.js/master/cheet.js", function() {
 
         cheet('↑ ↑ ↓ ↓ ← → ← → b a', function() { alert('Konami!'); });
