@@ -4,20 +4,20 @@
  * 9x9 SDK is part of 9x9 development infrastructure.
  * As a tool kit, 9x9 SDK provides common front-end ultilization tools.
  *
- * Please refer to http://dev.teltel.com/louis/9x9-sdk/ for usage
+ * Please refer to http://dev.teltel.com/9x9-sdk/ for usage
  * and more information.
  *
  * ChangeLog:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/ChangeLog.txt
+ *   http://dev.teltel.com/9x9-sdk/ChangeLog.txt
  *
  * The latest release:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/js/release/latest/nn-sdk.js
+ *   http://dev.teltel.com/9x9-sdk/js/release/latest/nn-sdk.js
  *
  * The latest development:
  *
- *   http://dev.teltel.com/louis/9x9-sdk/js/nn-sdk.js
+ *   http://dev.teltel.com/9x9-sdk/js/nn-sdk.js
  *
  * @author Louis Jeng <louis.jeng@9x9.tv>
  */
@@ -66,14 +66,15 @@ var nn = { };
     nn.load = function(url, callback) {
 
         var head = document.getElementsByTagName('head')[0];
+        var _dfd = null;
 
         // load css
         if (typeof url == 'undefined') {
             // TODO: report loaded objects
-        } else if (url == null || url == '') {
+        } else if (url === null || url === '') {
 
             // bypass
-            var _dfd = $.Deferred();
+            _dfd = $.Deferred();
             if (typeof callback == 'function') {
                 _dfd.done(callback);
             }
@@ -81,7 +82,7 @@ var nn = { };
 
         } else if (typeof url == 'string' && url.substr(-4, 4) == '.css') {
 
-            var _dfd = $.Deferred();
+            _dfd = $.Deferred();
             var css = document.createElement('link');
             css.type = "text/css";
             css.rel = "stylesheet";
@@ -162,7 +163,7 @@ var nn = { };
             type = 'undefined';
         }
 
-        if (nn.logTypes[type] == false) {
+        if (nn.logTypes[type] === false) {
             return false;
         }
 
@@ -333,7 +334,7 @@ var nn = { };
         
         $.each(promises, function(i, promise) {
             
-            if (promise == null) {
+            if (promise === null) {
                 nn.log('nn.when: by-passing `null`', 'debug');
                 promise = $.Deferred().resolve();
             }
@@ -352,7 +353,7 @@ var nn = { };
                 
                 count = count - 1;
                 nn.log(count + ' promises left', 'debug');
-                if (count == 0) {
+                if (count === 0) {
                     nn.log('total promises commited = ' + countCommited, 'debug');
                     if (resolved) {
                         _dfd.resolve(countCommited);
@@ -364,16 +365,16 @@ var nn = { };
         });
         
         return _dfd.promise();
-    },
+    };
     
     nn.apiHooks = {
-        200: function(jqXHR, textStatus) { },
-        201: function(jqXHR, textStatus) { },
-        400: function(jqXHR, textStatus) { },
-        401: function(jqXHR, textStatus) { },
-        403: function(jqXHR, textStatus) { },
-        404: function(jqXHR, textStatus) { },
-        500: function(jqXHR, textStatus) { }
+        '200': function(jqXHR, textStatus) { },
+        '201': function(jqXHR, textStatus) { },
+        '400': function(jqXHR, textStatus) { },
+        '401': function(jqXHR, textStatus) { },
+        '403': function(jqXHR, textStatus) { },
+        '404': function(jqXHR, textStatus) { },
+        '500': function(jqXHR, textStatus) { }
     };
     
     nn.on = function(type, hook) {
@@ -439,11 +440,11 @@ var nn = { };
 
         if (typeof turnOn == 'undefined') {
 
-            return nn.logTypes['debug'];
+            return nn.logTypes.debug;
 
         } else if (typeof turnOn == 'boolean') {
 
-            nn.logTypes['debug'] = turnOn;
+            nn.logTypes.debug = turnOn;
 
         } else {
 
@@ -455,11 +456,11 @@ var nn = { };
 
         if (typeof turnOn == 'undefined') {
 
-            return nn.logTypes['verbose'];
+            return nn.logTypes.verbose;
 
         } else if (typeof turnOn == 'boolean') {
 
-            nn.logTypes['verbose'] = turnOn;
+            nn.logTypes.verbose = turnOn;
 
         } else {
 
@@ -471,11 +472,11 @@ var nn = { };
 
         if (typeof turnOn == 'undefined') {
 
-            return nn.logTypes['info'];
+            return nn.logTypes.info;
 
         } else if (typeof turnOn == 'boolean') {
 
-            nn.logTypes['info'] = turnOn;
+            nn.logTypes.info = turnOn;
 
         } else {
 
@@ -487,11 +488,11 @@ var nn = { };
 
         if (typeof turnOn == 'undefined') {
 
-            return nn.logTypes['warning'];
+            return nn.logTypes.warning;
 
         } else if (typeof turnOn == 'boolean') {
 
-            nn.logTypes['warning'] = turnOn;
+            nn.logTypes.warning = turnOn;
 
         } else {
 
@@ -503,11 +504,11 @@ var nn = { };
 
         if (typeof turnOn == 'undefined') {
 
-            return nn.logTypes['error'];
+            return nn.logTypes.error;
 
         } else if (typeof turnOn == 'boolean') {
 
-            nn.logTypes['error'] = turnOn;
+            nn.logTypes.error = turnOn;
 
         } else {
 
@@ -517,18 +518,19 @@ var nn = { };
 
     nn.getFileTypeByName = function(name) {
         
-        if (typeof name == 'undefined' || name == null || name == '' || name.indexOf('.') <= 0) {
+        if (typeof name == 'undefined' || name === null || name === '' || name.indexOf('.') <= 0) {
             return '';
         }
         return name.substr(name.indexOf('.'));
     };
-    
-    if (typeof define != 'undefined') {
-        define([ ], function() {
-            nn.log('AMD', 'debug');
-            return nn;
-        });
-    }
 
 })(nn);
+
+if (typeof define != 'undefined') {
+
+    define([ nn.jQueryUrl ], function($) {
+        nn.log('AMD', 'debug');
+        return nn;
+    });
+}
 

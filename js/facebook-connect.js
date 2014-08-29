@@ -11,7 +11,7 @@ $(function() {
 		cookie:     true, // enable cookies to allow the server to access the session
 		xfbml:      true, // parse XFBML
 		oauth:      true, // enable OAth 2.0
-		channelUrl: 'http://dev.teltel.com/louis/9x9-sdk-usage/js/channel.html'
+		channelUrl: 'http://dev.teltel.com/9x9-sdk/js/channel.html'
 	});
 	
 	$('#facebook-connect').click(function() {
