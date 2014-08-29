@@ -95,7 +95,7 @@ $(function() {
 			// reset progress bar
 			$('#progress-bar')
 				.text('')
-				.progressBar({ barImage: 'http://202.5.224.193/louis/9x9-sdk-usage/img/progress-bg-black.gif' })
+				.progressBar({ barImage: 'http://dev.teltel.com/9x9-sdk/img/progress-bg-black.gif' })
 				.show();
 			// dynamic generates cancel button
 			$('<button></button>')
@@ -110,14 +110,14 @@ $(function() {
 		};
 		
 		var settings = {
-			flash_url:               'http://202.5.224.193/louis/9x9-sdk-usage/js/swfupload/swfupload.swf',
+			flash_url:               'http://dev.teltel.com/9x9-sdk/js/swfupload/swfupload.swf',
 			upload_url:              'http://' + s3attr['bucket'] + '.s3.amazonaws.com/', // http://9x9tmp-ds.s3.amazonaws.com/
 			file_size_limit:         parameter['size'],
 			file_types:              '*.mp3',
 			file_types_description:  nn._('Audio Files'),
 			file_post_name:          'file', // hardcode
 			button_placeholder:      $('#s3-upload-btn').get(0), // 按鈕放置處的 DOM
-			button_image_url:        'http://202.5.224.193/louis/9x9-sdk-usage/img/btn-upload.png', // 按鈕的圖檔，四幅式
+			button_image_url:        'http://dev.teltel.com/9x9-sdk/img/btn-upload.png', // 按鈕的圖檔，四幅式
 			button_width:            '95',
 			button_height:           '32',
 			button_action:           SWFUpload.BUTTON_ACTION.SELECT_FILE, // hardcode

@@ -4,15 +4,32 @@
 
 nn.init(function() {
 	
+    nn.load("css/style.css");
+    nn.load("css/prettify.css");
+    nn.load("http://kevinburke.bitbucket.org/markdowncss/markdown.css");
+    nn.load("http://rawgithub.com/namuol/cheet.js/master/cheet.js", function() {
+
+        cheet('↑ ↑ ↓ ↓ ← → ← → b a', function() { alert('Konami!'); });
+    });
 	prettyPrint();
 	
 	// log
 	
-	nn.log('I am default log');
-	nn.log('I am info log', 'info');
-	nn.log('I am warning log', 'warning');
-	nn.log('I am error log', 'error');
-	nn.log('I am debug log', 'debug');
+    nn.log('I am default log'); // recommended
+
+    // other log levels
+    nn.log('I am info log', 'info');
+    nn.log('I am warning log', 'warning');
+    nn.log('I am error log', 'error');
+    nn.log('I am debug log', 'debug');     // default
+    nn.log('I am verbose log', 'verbose'); // default is turned off unless you turn it on explicitly
+    nn.log('I am customized log', 'whatever-you-want');
+
+    // short cut
+    nn.debug();      // get the debug log status
+    nn.debug(false); // turn off debug log
+    nn.debug(true);  // turn on debug log
+    nn.debug('I am debug log message'); // log 'debug' message (so does tohers)
 	
 	// i18n
 	
@@ -135,9 +152,10 @@ nn.init(function() {
     $('#api-when').click(function() {
         
         var videoIds = [
-            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY',
+            'UGLZC5em9Xo', 'EGYOEqBRThc', 'JwqM0XAJxnY', 'GCnCcg589xg',
             'rcbZ7XIc_K0', 'azP5vXYGYgg', 'mwQTHxWugWE', 'VN_kWGjgZDE',
-            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM'
+            'JCOfxErrG8w', 'AHlyK5W7rIw', 'tXcCL2P2BmM', 'Q5JDf1ax5sw',
+            'L07dKlGums0', 'L07dKlGums0', 'G9uMxVub7EE', 'bps3COJpST8'
         ];
         
         var apiBaseUrl = 'http://gdata.youtube.com/feeds/api/videos/';

@@ -1,0 +1,23 @@
+{
+  "name": "nn-sdk",
+  "version": "0.7.0",
+  "author": "Louis Jeng <louis.jeng@9x9.tv>",
+  "description": "9x9 SDK is a common front-end toolbox",
+  "contributors": [ 
+    {
+      "name": "Louis Jeng",
+      "email": "louis.jeng@9x9.tv"
+    } 
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:9x9group/9x9-sdk.git"
+  },
+  "dependencies": {
+    "jquery": ""
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "",
+    "grunt": ""
+  }
+}

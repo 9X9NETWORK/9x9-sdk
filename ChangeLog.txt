@@ -1,0 +1,28 @@
+  + 2013-11-19 v0.0.7 by Louis:
+    - jQuery 1.10.2
+    - nn.load() enhancement
+    - nn.log() enhancement
+    - AMD support (expiremental)
+
+  + 2013-05-09 v0.0.6 by Louis:
+    - nn.api(), 'DELETE' workarround
+    - CSS/JS loader (also load jQuery automatically when missing)
+    - jQuery 1.9.1
+
+  + 2013-01-30 v0.0.5 by Louis:
+    - CORS cross domain support
+
+  + 2012-11-28 v0.0.4 by Louis:
+    - support multi-level language pack
+
+  + 2012-10-01 v0.0.3 by Louis:
+    - nn.when()
+    - disable ajax cache
+
+  + 2012-09-27 v0.0.2 by Louis:
+    - nn.on() multiple hook
+    - nn.api() supports YouTube API
+
+  + 2012-08-23 v0.0.1 by Louis:
+    - first version
+    - api(), log(), i18n()
